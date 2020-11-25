@@ -18,8 +18,11 @@ class TopSketch extends React.Component {
         // Hexes
         this.stage = 0;
 
-        this.h = new Paths.Hexagon(200, 200, 50);
-        this.h2 = new Paths.Hexagon(200, 200, 50 * 1.18)
+        this.hcenter = new V(200, window.innerHeight);
+
+        this.h0 = new Paths.Hexagon(200, 200, 100);
+        this.h1 = new Paths.Hexagon(200, 200, 100 * 1.18)
+        this.h2 = new Paths.Hexagon(200, 200, 100 * 1.18 * 1.18)
 
         this.startpath = new V(200, 200);
         this.secondend = new V(300, 300);
@@ -40,7 +43,7 @@ class TopSketch extends React.Component {
 
         this.sketchGlobals = {
             y: 0,
-            maxY: 2000,
+            maxY: window.innerHeight,
         }
 
         this.count = 0;
@@ -74,10 +77,10 @@ class TopSketch extends React.Component {
     }
 
     mouseClicked(p5, e) {
-        let stuff = this.h.closestPoint(new V(this.mx, this.my));
-        this.rope = new Paths.Rope(this.h.pointsinc(stuff, 10), 10);
-        stuff = this.h2.closestPoint(this.startpath);
-        this.rope2 = new Paths.Rope(this.h2.pointsinc(stuff, 10), 10);
+        let stuff = this.h0.closestPoint(new V(this.mx, this.my));
+        this.rope = new Paths.Rope(this.h0.pointsinc(stuff, 10, true), 10);
+        stuff = this.h1.closestPoint(this.startpath);
+        this.rope2 = new Paths.Rope(this.h1.pointsinc(stuff, 10), 10);
         this.stage++;
     }
 
@@ -104,6 +107,10 @@ class TopSketch extends React.Component {
 
     draw(p5) {
 
+        const domy = document.documentElement.scrollTop;
+        if (domy !== 0) {
+            this.sketchGlobals.y = this.sketchGlobals.maxY;
+        }
         [this.mx, this.my] = [p5.mouseX, p5.mouseY];
 
         p5.background(20);
@@ -139,17 +146,25 @@ class TopSketch extends React.Component {
         }
 
         p5.stroke(255);
-        p5.strokeWeight(3);
+        p5.strokeWeight(1);
         p5.noFill();
-
-        p5.ellipse(200, 200, 10, 10);
 
         if (this.stage === 0) {
 
-            this.h.draw(p5);
+            const drop = new V(0, -this.sketchGlobals.y);
+            const pos = V.ADD( this.hcenter, drop );
+
+            this.h0.setPos(pos);
+            this.h1.setPos(pos);
+            this.h2.setPos(pos);
+
+            this.h0.draw(p5);
+            this.h0.setPoints(-p5.frameCount / 100);
+            this.h1.draw(p5);
+            this.h1.setPoints(PI / 3 + p5.frameCount / 100);
             this.h2.draw(p5);
-            this.h2.setPoints(PI / 3 + p5.frameCount / 100);
-            this.h.setPoints(-p5.frameCount / 100);
+            this.h2.setPoints(-2 * p5.frameCount / 100);
+            
             // let stuff = this.h.closestPoint(new V(p5.mouseX, p5.mouseY));
             // let p = this.h.points[stuff];
             // p5.ellipse(p.x, p.y, 10, 10);
@@ -160,10 +175,10 @@ class TopSketch extends React.Component {
             // p5.ellipse(this.path.pos.x, this.path.pos.y, 10, 10);
 
             this.rope.draw(p5);
-            this.rope.lerpUpdate(new V(p5.mouseX, p5.mouseY), 0.3);
+            this.rope.lerpUpdate(new V(p5.mouseX, p5.mouseY), 0.2);
 
             this.rope2.draw(p5);
-            this.rope2.lerpUpdate(this.path.pos, 0.3);
+            this.rope2.lerpUpdate(this.path.pos, 0.2);
         }
 
         // p.noLoop();

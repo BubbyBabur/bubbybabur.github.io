@@ -1,11 +1,7 @@
-import React from "react"
-import Sketch from "react-p5";
 
 import V from "./V"
 
 const TAU = 6.28318530717958647692528676655900576839433879875021;
-const TWO_PI = TAU;
-const PI = 3.14159265358979323846264338327950288;
 
 class Path {
 
@@ -76,13 +72,13 @@ class TimeCirclePath extends Path {
 
         if(this.cc) {
             this.angle -= this.wspeed;
-            if (this.angle < this.origangle - TWO_PI) {
+            if (this.angle < this.origangle - TAU) {
                 this.done = true;
             }
             this.pos = V.ADD(this.center, new V(this.r * Math.cos(this.angle), this.r * Math.sin(this.angle)));
         } else {
             this.angle += this.wspeed;
-            if (this.angle > this.origangle + TWO_PI) {
+            if (this.angle > this.origangle + TAU) {
                 this.done = true;
             }
             this.pos = V.ADD(this.center, new V(this.r * Math.cos(this.angle), this.r * Math.sin(this.angle)));
@@ -197,6 +193,15 @@ class Hexagon {
         this.setPoints(0);
     }
 
+    /**
+     * 
+     * @param {V} v 
+     */
+    setPos(v) {
+        this.x = v.x;
+        this.y = v.y;
+    }
+
     setPoints(deg) {
         this.deg = deg;
         this.points = [];
@@ -205,14 +210,26 @@ class Hexagon {
         }
     }
 
-    pointsinc(start, d) {
-        let newps = [];
-        for (let i = start; i < start + 6; i++) {
-            for (let j = 0; j < 1; j += d / this.r) {
-                newps.push(V.LERP(this.points[i % 6], this.points[(i + 1) % 6], j));
+    pointsinc(start, d, cc) {
+
+        if(!cc) {
+            let newps = [];
+            for (let i = start; i < start + 6; i++) {
+                for (let j = 0; j < 1; j += d / this.r) {
+                    newps.push(V.LERP(this.points[i % 6], this.points[(i + 1) % 6], j));
+                }
             }
+            return newps;
+        } else {
+            let newps = [];
+            for (let i = start + 12; i > start + 6; i--) {
+                for (let j = 0; j < 1; j += d / this.r) {
+                    newps.push(V.LERP(this.points[i % 6], this.points[(i - 1) % 6], j));
+                }
+            }
+            return newps;
         }
-        return newps;
+        
     }
 
     closestPoint(v) {
@@ -221,9 +238,9 @@ class Hexagon {
 
         angle -= this.deg;
         while (angle < 0) {
-            angle += TWO_PI;
+            angle += TAU;
         }
-        angle *= 6 / TWO_PI;
+        angle *= 6 / TAU;
         let p = Math.round(angle);
         return (p) % 6;
     }
@@ -234,100 +251,6 @@ class Hexagon {
         }
 
         p5.line(this.points[0].x, this.points[0].y, this.points[this.points.length - 1].x, this.points[this.points.length - 1].y)
-    }
-}
-
-class testsketch extends React.Component {
-
-    constructor(props) {
-
-        super();
-
-        this.stage = 0;
-
-        this.mx = 0;
-        this.my = 0;
-
-        this.h = new Hexagon(200, 200, 50);
-        this.h2 = new Hexagon(200, 200, 50 * 1.18)
-
-        this.startpath = new V(200, 200);
-        this.secondend = new V(300, 300);
-        this.center = new V(400, 200);
-        this.end = new V(600,600)
-
-        this.ps = 20;
-        
-        const path0 = new TimeLinearPath(this.startpath, this.secondend, this.ps)
-        const path1 = new TimeCirclePath(this.secondend, this.center, this.ps, true);
-        const path2 = new TimeLinearPath(this.secondend, this.end, this.ps);
-
-        this.path = new CombinedPath([path0,path1,path2]);
-
-    }
-
-    setup(p5, parent) {
-        p5.createCanvas(p5.windowWidth, p5.windowHeight).parent(parent);
-
-        const c = p5.select("#start");
-
-        c.mouseClicked((e) => {
-            this.mouseClicked();
-        });
-
-    }
-
-    mouseClicked() {
-        let stuff = this.h.closestPoint(new V(this.mx,this.my));
-        this.rope = new Rope(this.h.pointsinc(stuff, 10), 10);
-        stuff = this.h2.closestPoint(this.startpath);
-        this.rope2 = new Rope(this.h2.pointsinc(stuff, 10), 10);
-        this.stage++;
-    }
-
-    draw(p5) {
-
-        [this.mx,this.my] = [p5.mouseX, p5.mouseY];
-
-        p5.clear();
-
-        // p5.background(20);
-
-        p5.stroke(255);
-        p5.strokeWeight(3);
-
-        p5.ellipse(200, 200, 10, 10);
-
-        if (this.stage === 0) {
-
-            this.h.draw(p5);
-            this.h2.draw(p5);
-            this.h2.setPoints(PI / 3 + p5.frameCount / 100);
-            this.h.setPoints(-p5.frameCount / 100);
-            // let stuff = this.h.closestPoint(new V(p5.mouseX, p5.mouseY));
-            // let p = this.h.points[stuff];
-            // p5.ellipse(p.x, p.y, 10, 10);
-
-        } else {
-            
-            this.path.update();
-            // p5.ellipse(this.path.pos.x, this.path.pos.y, 10, 10);
-
-            this.rope.draw(p5);
-            this.rope.lerpUpdate(new V(p5.mouseX, p5.mouseY), 0.1);
-
-            this.rope2.draw(p5);
-            this.rope2.lerpUpdate(this.path.pos, 0.1);
-        }
-
-        // s *= 1.18;
-
-    }
-
-    
-
-    render() {
-        return <div id="Test"><Sketch setup={(...p) => { this.setup(...p) }} draw={(p5) => { this.draw(p5) }} /></div>
     }
 
 }
