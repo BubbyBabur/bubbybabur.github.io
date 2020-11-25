@@ -1,17 +1,17 @@
 import './css/app.css';
 import React from 'react';
-import TopSketch from './topsketch'
+import TopSketch from './components/topsketch'
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      brr: "asdfsdaa"
+      brr: 1
     }
   }
 
   render() {
-    return <div>
+    return <div onClick={(e) => { this.setState({ brr: this.state.brr + 1 }) }}>
       <div id="canvas-container">
         <TopSketch />
       </div>
