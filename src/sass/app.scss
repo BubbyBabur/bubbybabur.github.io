@@ -1,0 +1,19 @@
+$color: #ff0000;
+$background: #141414;
+
+#canvas-container {
+    position: absolute;
+    z-index: -1;
+    left: 0px;
+    top: 0px;
+    height: 100vh;
+}
+
+#start {
+    height: 100vh;
+    width: 100vw;
+}
+
+#App {
+    color: $color;
+}
