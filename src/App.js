@@ -1,7 +1,7 @@
 import './css/app.css';
 import React from 'react';
 import TopSketch from './components/topsketch'
-import TestSketch from './components/testsketch'
+// import TestSketch from './components/testsketch'
 
 class App extends React.Component {
   constructor(props) {

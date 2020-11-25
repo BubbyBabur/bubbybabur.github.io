@@ -1,7 +1,7 @@
 import React from "react"
 import Sketch from "react-p5";
 
-import V from "../utils/V"
+import V from "./V"
 
 const TAU = 6.28318530717958647692528676655900576839433879875021;
 const TWO_PI = TAU;
@@ -181,7 +181,6 @@ class Rope {
     }
 }
 
-
 class Hexagon {
 
     /**
@@ -333,4 +332,4 @@ class testsketch extends React.Component {
 
 }
 
-export default testsketch;
+export { Path, TimeLinearPath, TimeCirclePath, CombinedPath, StaticRope, Rope, Hexagon };
