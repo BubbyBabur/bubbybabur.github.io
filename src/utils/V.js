@@ -83,6 +83,14 @@ class V {
     }
 
     /**
+     * 
+     * @param {V} v 
+     */
+    equals(v) {
+        return this.x === v.x && this.y === v.y;
+    }
+
+    /**
      * Dots with another Vector
      * @param {V} V2
      */

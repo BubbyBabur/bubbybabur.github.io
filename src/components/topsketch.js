@@ -16,26 +16,19 @@ class TopSketch extends React.Component {
         this.my = 0;
 
         // Hexes
-        this.stage = 0;
 
         this.hcenter = new V(200, window.innerHeight);
 
-        this.h0 = new Paths.Hexagon(200, 200, 100);
-        this.h1 = new Paths.Hexagon(200, 200, 100 * 1.18)
-        this.h2 = new Paths.Hexagon(200, 200, 100 * 1.18 * 1.18)
+        this.ps = 30;
 
-        this.startpath = new V(200, 200);
-        this.secondend = new V(300, 300);
-        this.center = new V(400, 200);
-        this.end = new V(600, 600)
+        this.hex0 = [];
 
-        this.ps = 40;
-
-        const path0 = new Paths.TimeLinearPath(this.startpath, this.secondend, this.ps)
-        const path1 = new Paths.TimeCirclePath(this.secondend, this.center, this.ps, true);
-        const path2 = new Paths.TimeLinearPath(this.secondend, this.end, this.ps);
-
-        this.path = new Paths.CombinedPath([path0, path1, path2]);
+        for (let i = 0; i < 3; i++) {
+            this.hex0.push(new Paths.HexPath(this.hcenter.x, this.hcenter.y, 
+                100 * (1.18 ** i),PI / 3 * i, 
+                1 / 100 * PI * ((-1) ** i) * (1.5 ** i), 
+                null));
+        }
 
         // Background
         this.d = 150;
@@ -77,11 +70,36 @@ class TopSketch extends React.Component {
     }
 
     mouseClicked(p5, e) {
-        let stuff = this.h0.closestPoint(new V(this.mx, this.my));
-        this.rope = new Paths.Rope(this.h0.pointsinc(stuff, 10, true), 10);
-        stuff = this.h1.closestPoint(this.startpath);
-        this.rope2 = new Paths.Rope(this.h1.pointsinc(stuff, 10), 10);
-        this.stage++;
+        for (let i = 0; i < this.hex0.length - 1; i++) {
+            const hex = this.hex0[i];
+
+            let path = new Paths.TimeLinearPath(new V(hex.x,hex.y), new V(p5.width + hex.length(), 100 * i + 100), this.ps);
+
+            path = Paths.PathToLoops(path, [
+                {
+                    radius: 200,
+                    at: 300
+                }, {
+                    radius: -200,
+                    at: 700
+                }, {
+                    radius: 200,
+                    at: 700
+                }]);
+
+            hex.setPath(path);
+            hex.release();
+        } 
+
+        const hex = this.hex0[2];
+
+        let path1 = new Paths.TimeLinearPath(new V(hex.x,hex.y), new V(1000,500), this.ps);
+        let path2 = new Paths.TimeLinearPath(new V(1000,200),new V(300, 1000), this.ps);
+
+        let path = Paths.ConnectPathsWithArc(path1,path2)
+        hex.setPath(path);
+        hex.release();
+
     }
 
     setup(p5, parent) {
@@ -149,36 +167,14 @@ class TopSketch extends React.Component {
         p5.strokeWeight(1);
         p5.noFill();
 
-        if (this.stage === 0) {
 
-            const drop = new V(0, -this.sketchGlobals.y);
-            const pos = V.ADD( this.hcenter, drop );
+        const drop = new V(0, -this.sketchGlobals.y);
+        const pos = V.ADD(this.hcenter, drop);
 
-            this.h0.setPos(pos);
-            this.h1.setPos(pos);
-            this.h2.setPos(pos);
-
-            this.h0.draw(p5);
-            this.h0.setPoints(-p5.frameCount / 100);
-            this.h1.draw(p5);
-            this.h1.setPoints(PI / 3 + p5.frameCount / 100);
-            this.h2.draw(p5);
-            this.h2.setPoints(-2 * p5.frameCount / 100);
-            
-            // let stuff = this.h.closestPoint(new V(p5.mouseX, p5.mouseY));
-            // let p = this.h.points[stuff];
-            // p5.ellipse(p.x, p.y, 10, 10);
-
-        } else {
-
-            this.path.update();
-            // p5.ellipse(this.path.pos.x, this.path.pos.y, 10, 10);
-
-            this.rope.draw(p5);
-            this.rope.lerpUpdate(new V(p5.mouseX, p5.mouseY), 0.2);
-
-            this.rope2.draw(p5);
-            this.rope2.lerpUpdate(this.path.pos, 0.2);
+        for (let i = 0; i < this.hex0.length; i++) {
+            const hex = this.hex0[i];
+            hex.update(p5);
+            hex.setPos(pos);
         }
 
         // p.noLoop();
