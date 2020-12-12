@@ -18,6 +18,8 @@ class Path {
         this.pos = new V(start.x, start.y);
         this.done = false;
         this.slope = NaN;
+        this.slope1 = NaN;
+        this.slope2 = NaN;
     }
 
     update() {
@@ -25,7 +27,7 @@ class Path {
     }
 
     draw(p5) {
-        
+
     }
 
 }
@@ -72,7 +74,7 @@ class TimeLinearPath extends Path {
     }
 
     draw(p5) {
-        p5.line(this.start.x,this.start.y, this.end.x,this.end.y);
+        p5.line(this.start.x, this.start.y, this.end.x, this.end.y);
     }
 }
 
@@ -141,7 +143,7 @@ class TimeCirclePath extends Path {
     }
 
     draw(p5) {
-        if(!this.cc) {
+        if (!this.cc) {
             p5.arc(this.center.x, this.center.y, this.r * 2, this.r * 2, this.origangle, this.maxangle + this.origangle);
         } else {
             p5.arc(this.center.x, this.center.y, this.r * 2, this.r * 2, this.origangle - this.maxangle, this.origangle);
@@ -181,12 +183,12 @@ class CombinedPath extends Path {
 
         this.pos = this.paths[this.currpath].pos;
 
-        
+
 
     }
 
     draw(p5) {
-        for(const path of this.paths) {
+        for (const path of this.paths) {
             path.draw(p5);
         }
     }
@@ -379,10 +381,10 @@ class HexPath extends Hexagon {
     }
 
     drawPath(p5) {
-        if(this.state !== 0) {
+        if (this.state !== 0) {
             this.path.draw(p5);
         }
-    } 
+    }
 
     release() {
         this.state = 1;
@@ -455,30 +457,37 @@ function PathToLoops(linear, objs) {
  */
 function ConnectPathsWithArc(path1, path2) {
 
-    let slope1 = new V(path1.slope)
-    let slope2 = new V(path2.slope)
+    if(path1.end.equals(path2.start)) {
+        return CombinedPath([path1,path2])
+    }
 
+    let slope1, slope2;
+    if (path1.slope instanceof V) slope1 = new V(path1.slope)
+    else slope1 = new V(path1.slope2);
+
+    if (path2.slope instanceof V) slope2 = new V(path2.slope)
+    else slope2 = new V(path2.slope1);
 
     let start = path1.end;
     let end = path2.start;
 
-    let n1 = new V( -slope1.y, slope1.x ); 
-    let n2 = new V( -slope2.y, slope2.x );
+    let n1 = new V(-slope1.y, slope1.x);
+    let n2 = new V(-slope2.y, slope2.x);
     let c1 = n1.dot(start);
     let c2 = n2.dot(end);
 
     let f1 = -n2.x / n1.x;
 
-    let iy = ( c1 * f1 + c2) / (n1.y * f1 + n2.y);
-    let ix = ( c2 - iy * n2.y ) / n2.x;
+    let iy = (c1 * f1 + c2) / (n1.y * f1 + n2.y);
+    let ix = (c2 - iy * n2.y) / n2.x;
 
-    let intersection = new V(ix,iy);
-    let dist1 = V.SUB(start,intersection);
-    let dist2 = V.SUB(end,intersection);
+    let intersection = new V(ix, iy);
+    let dist1 = V.SUB(start, intersection);
+    let dist2 = V.SUB(end, intersection);
 
     let add1 = true;
     let toadd;
-    if(dist1.mag() < dist2.mag()) {
+    if (dist1.mag() < dist2.mag()) {
         let oldstart = start;
         dist1.norm();
         dist1.mult(dist2.mag());
@@ -490,9 +499,8 @@ function ConnectPathsWithArc(path1, path2) {
         dist2.norm();
         dist2.mult(dist1.mag());
         end = V.ADD(intersection, dist2);
-        toadd = new TimeLinearPath(oldend, end, path1.speed);
+        toadd = new TimeLinearPath(end, oldend, path1.speed);
     }
-
 
     let d1 = start.dot(slope1);
     let d2 = end.dot(slope2);
@@ -515,27 +523,40 @@ function ConnectPathsWithArc(path1, path2) {
     let deg2 = Math.atan2(rad2.y, rad2.x);
 
     let deg;
-    if(z > 0) {
+    if (z > 0) {
         while (deg1 < deg2) deg1 += TAU;
         deg = deg1 - deg2;
     } else {
         while (deg2 < deg1) deg2 += TAU;
         deg = deg2 - deg1;
     }
-    
+
 
     let circ = new TimeCirclePath(start, center, path1.speed, z > 0, deg)
 
     let arr = [circ];
-    if(add1) {
+    if (add1) {
         arr = [toadd, ...arr];
-    }  else {
+    } else {
         arr = [...arr, toadd];
     }
 
     arr = [path1, ...arr, path2]
     const output = new CombinedPath(arr);
+    output.slope1 = slope1;
+    output.slope2 = slope2;
     return output;
 }
 
-export { Path, TimeLinearPath, TimeCirclePath, FollowPath, CombinedPath, StaticRope, Rope, Hexagon, HexPath, PathToLoop, PathToLoops, ConnectPathsWithArc };
+function ConnectPathsWithArcs(...paths) {
+    let path = paths[0];
+
+    for (let i = 1; i < paths.length; i++) {
+        const curr = paths[i];
+        path = ConnectPathsWithArc(path, curr);
+    }
+
+    return path;
+}
+
+export { Path, TimeLinearPath, TimeCirclePath, FollowPath, CombinedPath, StaticRope, Rope, Hexagon, HexPath, PathToLoop, PathToLoops, ConnectPathsWithArc, ConnectPathsWithArcs };

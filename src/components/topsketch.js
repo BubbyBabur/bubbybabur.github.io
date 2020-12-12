@@ -1,6 +1,8 @@
 import React from "react"
 import Sketch from "react-p5";
-import * as Paths from "../utils/path"
+
+import * as Paths from "../utils/Path"
+import Net from "../utils/Net"
 import V from "../utils/V"
 
 const PI = 3.14159265358979323846264338327950288;
@@ -95,8 +97,20 @@ class TopSketch extends React.Component {
 
         let path1 = new Paths.TimeLinearPath(new V(hex.x,hex.y), new V(1000,500), this.ps);
         let path2 = new Paths.TimeLinearPath(new V(1000,200),new V(300, 1000), this.ps);
+        let path3 = new Paths.TimeLinearPath(new V(300,800), new V(1000,500),this.ps);
 
-        let path = Paths.ConnectPathsWithArc(path1,path2)
+        path1 = new Paths.PathToLoops(path1, [
+            {
+                at: 100,
+                radius: 100
+            }, 
+            {
+                at: 500,
+                radius:-100
+            }
+        ])
+
+        let path = Paths.ConnectPathsWithArcs(path1,path2,path3)
         hex.setPath(path);
         hex.release();
 
@@ -175,6 +189,10 @@ class TopSketch extends React.Component {
             const hex = this.hex0[i];
             hex.update(p5);
             hex.setPos(pos);
+
+            if(i === 2 && hex.state !== 0) {
+                // hex.path.draw(p5);
+            }
         }
 
         // p.noLoop();
