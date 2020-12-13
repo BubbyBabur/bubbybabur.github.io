@@ -143,6 +143,11 @@ class V {
     static LERP(v1,v2,num) {
         return new V(v1.x * (1 - num) + v2.x * num, v1.y * (1 - num) + v2.y * num);
     }
+
+    static RAND2D() {
+        let theta = Math.random() * Math.PI * 2;
+        return new V(Math.cos(theta), Math.sin(theta));
+    }
 }
 
 export default V;

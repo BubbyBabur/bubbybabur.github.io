@@ -59,6 +59,10 @@ class TimeLinearPath extends Path {
         return V.ADD(this.start, V.MULT(this.slope, d));
     }
 
+    length() {
+        return V.SUB(this.start, this.end).mag();
+    }
+
     update() {
 
         if (this.done) {
@@ -374,10 +378,14 @@ class HexPath extends Hexagon {
             this.draw(p5);
         } else {
             this.rope.draw(p5);
-            this.rope.lerpUpdate(this.path.pos, 1);
+            this.rope.lerpUpdate(this.path.pos, 0.2);
             this.path.update();
         }
 
+    }
+
+    randPoint() {
+        return this.points[Math.floor(this.points.length * Math.random())];
     }
 
     drawPath(p5) {
@@ -482,12 +490,24 @@ function ConnectPathsWithArc(path1, path2) {
     let ix = (c2 - iy * n2.y) / n2.x;
 
     let intersection = new V(ix, iy);
+
     let dist1 = V.SUB(start, intersection);
     let dist2 = V.SUB(end, intersection);
 
+    let dir1 = dist1.x / slope1.x;
+    let dir2 = dist2.x / slope2.x;
+
+    let mode = 0;
+    if (dir1 > 0 && dir2 < 0){
+        mode = 1;
+    } else if (dir1 < 0 && dir2 > 0){
+        mode = 2;
+    }
+    else throw new Error("Bad paths in ConnectPathsWithArc")
+
     let add1 = true;
     let toadd;
-    if (dist1.mag() < dist2.mag()) {
+    if (( dist1.mag() < dist2.mag() && mode === 1 ) || (dist1.mag() > dist2.mag() && mode === 2)) {
         let oldstart = start;
         dist1.norm();
         dist1.mult(dist2.mag());
@@ -517,7 +537,7 @@ function ConnectPathsWithArc(path1, path2) {
     let rad1 = V.SUB(start, center);
     let rad2 = V.SUB(end, center);
 
-    let z = center.x * rad1.y - center.y * rad1.x;
+    let z = slope1.x * rad1.y - slope1.y * rad1.x;
 
     let deg1 = Math.atan2(rad1.y, rad1.x);
     let deg2 = Math.atan2(rad2.y, rad2.x);
@@ -530,7 +550,6 @@ function ConnectPathsWithArc(path1, path2) {
         while (deg2 < deg1) deg2 += TAU;
         deg = deg2 - deg1;
     }
-
 
     let circ = new TimeCirclePath(start, center, path1.speed, z > 0, deg)
 

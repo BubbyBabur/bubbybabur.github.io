@@ -1,13 +1,10 @@
 class Net {
-    constructor() {
+    constructor(globals) {
         // Background
         this.d = 150;
         this.r = 150;
 
-        this.sketchGlobals = {
-            y: 0,
-            maxY: window.innerHeight,
-        }
+        this.sketchGlobals = globals;
 
         this.count = 0;
     }
@@ -18,40 +15,17 @@ class Net {
 
     mouseWheel(p5, e) {
 
-        const domy = document.documentElement.scrollTop;
-
-        if (domy === 0) {
-            this.sketchGlobals.y += e.deltaY;
-        } else {
-            this.sketchGlobals.y = this.sketchGlobals.maxY;
-        }
-
-        if (this.sketchGlobals.y <= 0) {
-            this.sketchGlobals.y = 0;
-        }
-
         if (this.sketchGlobals.y < this.sketchGlobals.maxY) {
-            e.preventDefault();
             this.count += Math.abs(e.deltaY) / 10;
-        } else {
-            this.sketchGlobals.y = this.sketchGlobals.maxY;
         }
 
     }
 
     setup(p5, parent) {
 
-        p5.createCanvas(p5.windowWidth, p5.windowHeight).parent(parent);
-
-        p5.frameRate(30);
-
         const c = p5.select("#start");
         c.mouseMoved((e) => {
             this.mouseMoved(p5, e);
-        })
-
-        c.mouseWheel((e) => {
-            this.mouseWheel(p5, e);
         })
 
     }
@@ -62,7 +36,6 @@ class Net {
         if (domy !== 0) {
             this.sketchGlobals.y = this.sketchGlobals.maxY;
         }
-        [this.mx, this.my] = [p5.mouseX, p5.mouseY];
 
         p5.background(20);
 

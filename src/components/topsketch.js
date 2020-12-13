@@ -32,20 +32,13 @@ class TopSketch extends React.Component {
                 null));
         }
 
-        // Background
-        this.d = 150;
-        this.r = 150;
 
         this.sketchGlobals = {
             y: 0,
             maxY: window.innerHeight,
         }
 
-        this.count = 0;
-    }
-
-    mouseMoved(p5, e) {
-        this.count += (Math.abs(p5.movedX) + Math.abs(p5.movedY)) / 10;
+        this.net = new Net(this.sketchGlobals);
     }
 
     mouseWheel(p5, e) {
@@ -64,7 +57,6 @@ class TopSketch extends React.Component {
 
         if (this.sketchGlobals.y < this.sketchGlobals.maxY) {
             e.preventDefault();
-            this.count += Math.abs(e.deltaY) / 10;
         } else {
             this.sketchGlobals.y = this.sketchGlobals.maxY;
         }
@@ -72,10 +64,16 @@ class TopSketch extends React.Component {
     }
 
     mouseClicked(p5, e) {
+
+        const width = p5.width;
+        const height = p5.height;
+
         for (let i = 0; i < this.hex0.length - 1; i++) {
             const hex = this.hex0[i];
 
-            let path = new Paths.TimeLinearPath(new V(hex.x,hex.y), new V(p5.width + hex.length(), 100 * i + 100), this.ps);
+            const pos = hex.randPoint();
+
+            let path = new Paths.TimeLinearPath(pos, new V(p5.width + hex.length(), 100 * i + 100), this.ps);
 
             path = Paths.PathToLoops(path, [
                 {
@@ -94,23 +92,60 @@ class TopSketch extends React.Component {
         } 
 
         const hex = this.hex0[2];
+        const pos = hex.randPoint();
 
-        let path1 = new Paths.TimeLinearPath(new V(hex.x,hex.y), new V(1000,500), this.ps);
-        let path2 = new Paths.TimeLinearPath(new V(1000,200),new V(300, 1000), this.ps);
-        let path3 = new Paths.TimeLinearPath(new V(300,800), new V(1000,500),this.ps);
+        let paths = [new Paths.TimeLinearPath(pos, new V(1000, 500), this.ps)];
 
-        path1 = new Paths.PathToLoops(path1, [
-            {
-                at: 100,
-                radius: 100
-            }, 
-            {
-                at: 500,
-                radius:-100
+        for(let i = 0; i < 3; i++) {
+            let dist = paths[i].length() / 3 + Math.random() * paths[i].length() * 1/3;
+
+            let inorout = Math.random() < 0.5;
+            
+            if(inorout) {
+                // in
+                let at = paths[i].length() - dist;
+                let pos = paths[i].at(at);
+                let dir = V.RAND2D();
+                
+
+                let start = V.ADD(pos, V.MULT(dir, -Math.random() * 300));
+                let end = V.ADD(pos, V.MULT(dir, Math.random() * 400));
+
+                let newpath = new Paths.TimeLinearPath(start,end,this.ps);
+
+                paths.push(newpath);
+            } else {
+                // out
+                let at = paths[i].length() + dist;
+                let pos = paths[i].at(at);
+                let dir = V.RAND2D();
+
+                let start = V.ADD(pos, V.MULT(dir, 200 + Math.random() * 500));
+                let end = V.ADD(start, V.MULT(dir, Math.random() * 500));
+
+                let newpath = new Paths.TimeLinearPath(start, end, this.ps);
+
+                paths.push(newpath);
             }
-        ])
+        }
 
-        let path = Paths.ConnectPathsWithArcs(path1,path2,path3)
+        // let path2 = new Paths.TimeLinearPath(new V(1000,300),new V(300, 500), this.ps);
+        
+        // let path3 = new Paths.TimeLinearPath(new V(300,800), new V(1000,500),this.ps);
+        // let path3 = new Paths.TimeLinearPath(new V(700,200), new V(600,1000), this.ps)
+
+        // path1 = new Paths.PathToLoops(path1, [
+        //     {
+        //         at: 100,
+        //         radius: 100
+        //     }, 
+        //     {
+        //         at: 500,
+        //         radius:-100
+        //     }
+        // ])
+
+        let path = Paths.ConnectPathsWithArcs(...paths)
         hex.setPath(path);
         hex.release();
 
@@ -122,65 +157,29 @@ class TopSketch extends React.Component {
 
         p5.frameRate(30);
 
+        this.net.setup(p5,parent);
+
         const c = p5.select("#start");
-        c.mouseMoved((e) => {
-            this.mouseMoved(p5, e);
-        })
-
-        c.mouseWheel((e) => {
-            this.mouseWheel(p5, e);
-        })
-
         c.mouseClicked((e) => {
             this.mouseClicked(p5, e);
         });
+
+        c.mouseWheel((e) => {
+            this.mouseWheel(p5, e);
+            this.net.mouseWheel(p5,e);
+        })
 
     }
 
     draw(p5) {
 
-        const domy = document.documentElement.scrollTop;
-        if (domy !== 0) {
-            this.sketchGlobals.y = this.sketchGlobals.maxY;
-        }
         [this.mx, this.my] = [p5.mouseX, p5.mouseY];
 
-        p5.background(20);
-
-        let func = x => 1 / (p5.exp(-10 * (x - 0.5)) + 1);
-        let noisefunc = (x, y, z) => (func(p5.noise(x, y, z)));
-
-        let positions = [];
-        for (let i = 0; i < p5.width / this.d + 2; i++) {
-            positions.push([]);
-            for (let j = 0; j < p5.height / this.d + 2; j++) {
-                positions[i].push(p5.createVector(
-                    (noisefunc(i * this.d * 10, j * this.d * 10, this.count / this.r + i * 100) + i - 1) * this.d,
-                    (noisefunc(i * this.d * 10, j * this.d * 10, this.count / 500 + this.r) + j - 1) * this.d));
-            }
-        }
-
-        p5.strokeWeight(1);
-
-        for (let i = 1; i < p5.width / this.d + 1; i++) {
-            for (let j = 1; j < p5.height / this.d + 1; j++) {
-
-
-                for (let i1 = -1; i1 <= 1; i1++) {
-                    for (let j1 = -1; j1 <= 1; j1++) {
-                        let di = p5.dist(positions[i][j].x, positions[i][j].y, positions[i + i1][j + j1].x, positions[i + i1][j + j1].y);
-                        let d2 = p5.dist(positions[i][j].x, positions[i][j].y, p5.width / 2, p5.height / 2) * this.d * this.d / 300 * 0;
-                        p5.stroke(255, 255, 255, p5.map(di * di + d2, this.d * this.d * 3, 0, 0, 100));
-                        p5.line(positions[i][j].x, positions[i][j].y, positions[i + i1][j + j1].x, positions[i + i1][j + j1].y)
-                    }
-                }
-            }
-        }
+        this.net.draw(p5);
 
         p5.stroke(255);
         p5.strokeWeight(1);
         p5.noFill();
-
 
         const drop = new V(0, -this.sketchGlobals.y);
         const pos = V.ADD(this.hcenter, drop);
@@ -191,11 +190,10 @@ class TopSketch extends React.Component {
             hex.setPos(pos);
 
             if(i === 2 && hex.state !== 0) {
-                // hex.path.draw(p5);
+                hex.path.draw(p5);
             }
         }
 
-        // p.noLoop();
         this.count += 0.5;
 
     }
