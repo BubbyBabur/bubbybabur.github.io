@@ -68,131 +68,111 @@ class TopSketch extends React.Component {
         const width = p5.width;
         const height = p5.height;
 
-        for (let i = 0; i < this.hex0.length - 1; i++) {
+        for (let i = 0; i < this.hex0.length; i++) {
             const hex = this.hex0[i];
 
             const pos = hex.randPoint();
 
-            let path = new Paths.TimeLinearPath(pos, new V(p5.width + hex.length(), 100 * i + 100), this.ps);
+            let paths = [new Paths.TimeLinearPath(pos, V.ADD(pos, V.MULT(V.RAND2D(), 300)), this.ps)];
 
-            path = Paths.PathToLoops(path, [
-                {
-                    radius: 200,
-                    at: 300
-                }, {
-                    radius: -200,
-                    at: 700
-                }, {
-                    radius: 200,
-                    at: 700
-                }]);
+            let num = Math.floor(Math.random() * 3) + 1;
+            for (let i = 0; i < num; i++) {
+                let dist = paths[i].length() / 3 + Math.random() * paths[i].length() * 1 / 3;
 
+                let inorout = Math.random() < 0.5;
+
+                if (inorout) {
+                    // in
+                    let at = paths[i].length() - dist;
+                    let pos = paths[i].at(at);
+
+                    let t = Math.atan2(paths[i].slope.y, paths[i].slope.x)
+                    let theta = t + 2 * Math.PI / 3 + Math.PI / 6 * Math.random();
+
+                    if (Math.random() < 0.5) {
+                        // theta *= -1;
+                    }
+
+                    let dir = new V(Math.cos(theta), Math.sin(theta));
+
+
+                    let start = V.ADD(pos, V.MULT(dir, -Math.random() * 300 - 200));
+
+                    let n = Math.random() * 400;
+                    let end = V.ADD(pos, V.MULT(dir, n));
+
+                    if (i === num - 1) {
+                        // console.log(end, hex.length());
+                        while (end.x < width + hex.length() && end.y < height + hex.length() && end.x > -hex.length() && end.y > -hex.length()) {
+                            n += 50;
+                            end = V.ADD(pos, V.MULT(dir, n));
+                        }
+                    }
+
+                    let newpath = new Paths.TimeLinearPath(start, end, this.ps);
+
+                    paths.push(newpath);
+                } else {
+                    // out
+                    let at = paths[i].length() + dist;
+                    let pos = paths[i].at(at);
+
+                    let t = Math.atan2(paths[i].slope.y, paths[i].slope.x)
+                    let theta = t + Math.PI / 3 + Math.PI / 3 * Math.random();
+
+                    if (Math.random() < 0.5) {
+                        theta *= -1;
+                    }
+
+                    let dir = new V(Math.cos(theta), Math.sin(theta));
+
+                    let start = V.ADD(pos, V.MULT(dir, 200 + Math.random() * 100));
+
+                    let n = Math.random() * 400;
+                    let end = V.ADD(start, V.MULT(dir, n));
+
+                    if (i === num - 1) {
+                        // console.log(end, hex.length());
+                        while (end.x < width + hex.length() && end.y < height + hex.length() && end.x > -hex.length() && end.y > -hex.length()) {
+                            n += 50;
+                            end = V.ADD(pos, V.MULT(dir, n));
+                        }
+                    }
+
+                    let newpath = new Paths.TimeLinearPath(start, end, this.ps);
+
+                    paths.push(newpath);
+                }
+            }
+
+            for (let i = 0; i < num + 1; i++) {
+                if (paths[i].length() > 500) {
+
+                    let rad = Math.random() * paths[i].length() / 10 + 100;
+                    if (Math.random() < 0.5) {
+                        paths[i] = new Paths.PathToLoops(paths[i], [{
+                            at: 1 / 3 * paths[i].length(),
+                            radius: rad
+                        }])
+                    } else {
+                        paths[i] = new Paths.PathToLoops(paths[i], [
+                            {
+                                at: 1 / 3 * paths[i].length(),
+                                radius: rad
+                            }, {
+                                at: 1 / 3 * paths[i].length(),
+                                radius: -rad
+                            }])
+                    }
+
+                }
+
+            }
+
+            let path = Paths.ConnectPathsWithArcs(...paths)
             hex.setPath(path);
             hex.release();
         } 
-
-        const hex = this.hex0[2];
-        const pos = hex.randPoint();
-
-        let paths = [new Paths.TimeLinearPath(pos, V.ADD(pos, V.MULT(new V(1,0.1), 300)), this.ps) ];
-
-        let num = 2;
-        for(let i = 0; i < num; i++) {
-            let dist = paths[i].length() / 3 + Math.random() * paths[i].length() * 1/3;
-
-            let inorout = Math.random() < 0.5;
-            
-            if(inorout) {
-                // in
-                let at = paths[i].length() - dist;
-                let pos = paths[i].at(at);
-                
-                let t = Math.atan2(paths[i].slope.y, paths[i].slope.x)
-                let theta = t + 2 * Math.PI / 3 + Math.PI / 6 * Math.random();
-
-                if (Math.random() < 0.5) {
-                    // theta *= -1;
-                }
-
-                let dir = new V(Math.cos(theta), Math.sin(theta));
-
-
-                let start = V.ADD(pos, V.MULT(dir, -Math.random() * 300 - 200));
-
-                let n = Math.random() * 400;
-                let end = V.ADD(pos, V.MULT(dir, n));
-                
-                if(i === num-1) {
-                    // console.log(end, hex.length());
-                    while (end.x < width + hex.length() && end.y < height + hex.length() && end.x > -hex.length() && end.y > -hex.length()) {
-                        n += 50;
-                        end = V.ADD(pos, V.MULT(dir, n));
-                    }
-                }
-
-                let newpath = new Paths.TimeLinearPath(start,end,this.ps);
-
-                paths.push(newpath);
-            } else {
-                // out
-                let at = paths[i].length() + dist;
-                let pos = paths[i].at(at);
-
-                let t = Math.atan2(paths[i].slope.y, paths[i].slope.x)
-                let theta = t + Math.PI / 3 + Math.PI / 3 * Math.random();
-
-                if (Math.random() < 0.5) {
-                    theta *= -1;
-                }
-
-                let dir = new V(Math.cos(theta), Math.sin(theta));
-
-                let start = V.ADD(pos, V.MULT(dir, 200 + Math.random() * 100));
-
-                let n = Math.random() * 400;
-                let end = V.ADD(start, V.MULT(dir, n));
-
-                if (i === num-1) {
-                    // console.log(end, hex.length());
-                    while (end.x < width + hex.length() && end.y < height + hex.length() && end.x > -hex.length() && end.y > -hex.length()) {
-                        n += 50;
-                        end = V.ADD(pos, V.MULT(dir, n));
-                    }
-                }
-
-                let newpath = new Paths.TimeLinearPath(start, end, this.ps);
-
-                paths.push(newpath);
-            }
-        }
-
-        for(let i = 0; i < num+1; i++) {
-            if(paths[i].length() > 500) {
-
-                let rad = Math.random() * paths[i].length() / 20 + 100;
-                if(Math.random() < 0.5) {
-                    paths[i] = new Paths.PathToLoops(paths[i], [{
-                        at: 1/3 * paths[i].length(),
-                        radius: rad
-                    }])
-                } else {
-                    paths[i] = new Paths.PathToLoops(paths[i], [
-                        {
-                            at: 1 / 3 * paths[i].length(),
-                            radius: rad
-                        }, {
-                            at: 1 / 3 * paths[i].length(),
-                            radius: -rad
-                        }])
-                }
-                
-            }
-            
-        }
-
-        let path = Paths.ConnectPathsWithArcs(...paths)
-        hex.setPath(path);
-        hex.release();
 
     }
 
@@ -233,11 +213,10 @@ class TopSketch extends React.Component {
             const hex = this.hex0[i];
             hex.update(p5);
             hex.setPos(pos);
-
-            if(i === 2 && hex.state !== 0) {
-                // hex.path.draw(p5);
-            }
         }
+
+        let alldone = this.hex0.every((hexpath) => hexpath.state !== 0 && hexpath.path.done)
+        // console.log(alldone)
 
         this.count += 0.5;
 
