@@ -94,9 +94,10 @@ class TopSketch extends React.Component {
         const hex = this.hex0[2];
         const pos = hex.randPoint();
 
-        let paths = [new Paths.TimeLinearPath(pos, new V(1000, 500), this.ps)];
+        let paths = [new Paths.TimeLinearPath(pos, V.ADD(pos, V.MULT(new V(1,0.1), 300)), this.ps) ];
 
-        for(let i = 0; i < 3; i++) {
+        let num = 2;
+        for(let i = 0; i < num; i++) {
             let dist = paths[i].length() / 3 + Math.random() * paths[i].length() * 1/3;
 
             let inorout = Math.random() < 0.5;
@@ -105,11 +106,29 @@ class TopSketch extends React.Component {
                 // in
                 let at = paths[i].length() - dist;
                 let pos = paths[i].at(at);
-                let dir = V.RAND2D();
                 
+                let t = Math.atan2(paths[i].slope.y, paths[i].slope.x)
+                let theta = t + 2 * Math.PI / 3 + Math.PI / 6 * Math.random();
 
-                let start = V.ADD(pos, V.MULT(dir, -Math.random() * 300));
-                let end = V.ADD(pos, V.MULT(dir, Math.random() * 400));
+                if (Math.random() < 0.5) {
+                    // theta *= -1;
+                }
+
+                let dir = new V(Math.cos(theta), Math.sin(theta));
+
+
+                let start = V.ADD(pos, V.MULT(dir, -Math.random() * 300 - 200));
+
+                let n = Math.random() * 400;
+                let end = V.ADD(pos, V.MULT(dir, n));
+                
+                if(i === num-1) {
+                    // console.log(end, hex.length());
+                    while (end.x < width + hex.length() && end.y < height + hex.length() && end.x > -hex.length() && end.y > -hex.length()) {
+                        n += 50;
+                        end = V.ADD(pos, V.MULT(dir, n));
+                    }
+                }
 
                 let newpath = new Paths.TimeLinearPath(start,end,this.ps);
 
@@ -118,10 +137,28 @@ class TopSketch extends React.Component {
                 // out
                 let at = paths[i].length() + dist;
                 let pos = paths[i].at(at);
-                let dir = V.RAND2D();
 
-                let start = V.ADD(pos, V.MULT(dir, 200 + Math.random() * 500));
-                let end = V.ADD(start, V.MULT(dir, Math.random() * 500));
+                let t = Math.atan2(paths[i].slope.y, paths[i].slope.x)
+                let theta = t + Math.PI / 3 + Math.PI / 3 * Math.random();
+
+                if (Math.random() < 0.5) {
+                    theta *= -1;
+                }
+
+                let dir = new V(Math.cos(theta), Math.sin(theta));
+
+                let start = V.ADD(pos, V.MULT(dir, 200 + Math.random() * 100));
+
+                let n = Math.random() * 400;
+                let end = V.ADD(start, V.MULT(dir, n));
+
+                if (i === num-1) {
+                    // console.log(end, hex.length());
+                    while (end.x < width + hex.length() && end.y < height + hex.length() && end.x > -hex.length() && end.y > -hex.length()) {
+                        n += 50;
+                        end = V.ADD(pos, V.MULT(dir, n));
+                    }
+                }
 
                 let newpath = new Paths.TimeLinearPath(start, end, this.ps);
 
@@ -129,21 +166,29 @@ class TopSketch extends React.Component {
             }
         }
 
-        // let path2 = new Paths.TimeLinearPath(new V(1000,300),new V(300, 500), this.ps);
-        
-        // let path3 = new Paths.TimeLinearPath(new V(300,800), new V(1000,500),this.ps);
-        // let path3 = new Paths.TimeLinearPath(new V(700,200), new V(600,1000), this.ps)
+        for(let i = 0; i < num+1; i++) {
+            if(paths[i].length() > 500) {
 
-        // path1 = new Paths.PathToLoops(path1, [
-        //     {
-        //         at: 100,
-        //         radius: 100
-        //     }, 
-        //     {
-        //         at: 500,
-        //         radius:-100
-        //     }
-        // ])
+                let rad = Math.random() * paths[i].length() / 20 + 100;
+                if(Math.random() < 0.5) {
+                    paths[i] = new Paths.PathToLoops(paths[i], [{
+                        at: 1/3 * paths[i].length(),
+                        radius: rad
+                    }])
+                } else {
+                    paths[i] = new Paths.PathToLoops(paths[i], [
+                        {
+                            at: 1 / 3 * paths[i].length(),
+                            radius: rad
+                        }, {
+                            at: 1 / 3 * paths[i].length(),
+                            radius: -rad
+                        }])
+                }
+                
+            }
+            
+        }
 
         let path = Paths.ConnectPathsWithArcs(...paths)
         hex.setPath(path);
@@ -190,7 +235,7 @@ class TopSketch extends React.Component {
             hex.setPos(pos);
 
             if(i === 2 && hex.state !== 0) {
-                hex.path.draw(p5);
+                // hex.path.draw(p5);
             }
         }
 
