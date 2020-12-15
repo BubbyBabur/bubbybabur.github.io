@@ -16,9 +16,7 @@ class App extends React.Component {
       <div id="canvas-container">
         <TopSketch />
       </div>
-      <div id="start">
-        {this.state.brr}
-      </div>
+      <div id="start"></div>
       <div id="content">
         Test brr haha <br />
         Brrrr <br />

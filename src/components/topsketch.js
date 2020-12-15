@@ -38,6 +38,15 @@ class TopSketch extends React.Component {
             maxY: window.innerHeight,
         }
 
+        this.state = {
+            clip: {
+                left: 0,
+                top: 0,
+            },
+            clipwidth: 100,
+            cliprot: 0
+        }
+
         this.net = new Net(this.sketchGlobals);
     }
 
@@ -68,6 +77,7 @@ class TopSketch extends React.Component {
         const width = p5.width;
         const height = p5.height;
 
+        // A lot of setup
         for (let i = 0; i < this.hex0.length; i++) {
             const hex = this.hex0[i];
 
@@ -172,8 +182,13 @@ class TopSketch extends React.Component {
             let path = Paths.ConnectPathsWithArcs(...paths)
             hex.setPath(path);
             hex.release();
-        } 
+        }
 
+    }
+
+    preload(p5) {
+        // this.clip = p5.loadImage("paperclip.png")
+        // console.log(this.clip)
     }
 
     setup(p5, parent) {
@@ -199,21 +214,31 @@ class TopSketch extends React.Component {
     draw(p5) {
 
         [this.mx, this.my] = [p5.mouseX, p5.mouseY];
-
+        
         this.net.draw(p5);
 
         p5.stroke(255);
         p5.strokeWeight(1);
         p5.noFill();
 
+
         const drop = new V(0, -this.sketchGlobals.y);
         const pos = V.ADD(this.hcenter, drop);
 
+        this.setState({
+            clip: {
+                top: pos.y,
+                left: pos.x
+            },
+            cliprot: p5.frameCount * 3
+        })
+        
         for (let i = 0; i < this.hex0.length; i++) {
             const hex = this.hex0[i];
-            hex.update(p5);
             hex.setPos(pos);
+            hex.update(p5);
         }
+
 
         let alldone = this.hex0.every((hexpath) => hexpath.state !== 0 && hexpath.path.done)
         // console.log(alldone)
@@ -239,7 +264,29 @@ class TopSketch extends React.Component {
             this.windowResized(p5);
         }
 
-        return <Sketch setup={setup} draw={draw} windowResized={windowResized} />;
+        const preload = (p5) => {
+            this.preload(p5);
+        }
+
+        return <div> 
+            <div id="front-sketch">
+                <Sketch setup={setup} draw={draw} windowResized={windowResized} preload={preload} />
+            </div>
+            <div 
+                // src="paperclip.png" 
+                className="front-icons" 
+                style={{ 
+                    ...this.state.clip, 
+                    transform: `translate(-50%,-50%)`,// `rotateZ(${this.state.cliprot}deg)`, 
+                    width: this.state.clipwidth,
+                    height: this.state.clipwidth,
+                    maskImage: `url(clip.svg)`,
+                    WebkitMaskImage: `url(clip.svg)`,
+                    maskSize: "100px",
+                    background: `linear-gradient(14deg, rgba(117,201,200,1) 0%, rgba(128,161,212,1) 100%)`
+                }} 
+                />
+        </div>;
     }
     
 }

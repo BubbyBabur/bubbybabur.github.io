@@ -11,6 +11,16 @@
   width: 100vw;
 }
 
+.front-icons {
+  position: absolute;
+  mask-size: 100px;
+  -webkit-mask-size: 100px;
+}
+
+#front-sketch {
+  position: absolute;
+}
+
 #App {
   color: #ff0000;
 }
