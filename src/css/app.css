@@ -13,8 +13,8 @@
 
 .front-icons {
   position: absolute;
-  mask-size: 100px;
-  -webkit-mask-size: 100px;
+  mask-size: 100%;
+  -webkit-mask-size: 100%;
 }
 
 #front-sketch {

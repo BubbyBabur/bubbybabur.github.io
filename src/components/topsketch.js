@@ -2,6 +2,7 @@ import React from "react"
 import Sketch from "react-p5";
 
 import * as Paths from "../utils/Path"
+import * as Misc from "../utils/misc"
 import Net from "../utils/Net"
 import V from "../utils/V"
 
@@ -43,9 +44,11 @@ class TopSketch extends React.Component {
                 left: 0,
                 top: 0,
             },
-            clipwidth: 100,
+            clipwidth: 150,
             cliprot: 0
         }
+
+        this.started = false;
 
         this.net = new Net(this.sketchGlobals);
     }
@@ -184,6 +187,7 @@ class TopSketch extends React.Component {
             hex.release();
         }
 
+        this.started = p5.frameCount;
     }
 
     preload(p5) {
@@ -225,12 +229,23 @@ class TopSketch extends React.Component {
         const drop = new V(0, -this.sketchGlobals.y);
         const pos = V.ADD(this.hcenter, drop);
 
+        let clipwidth = this.state.clipwidth;
+        if(this.started) {
+            // clipwidth = Misc.mappedease(p5.frameCount, this.started, this.started + 30, 150, 300)
+            clipwidth = Misc.moveto(clipwidth, 0, 0.1)
+        }
+        else if(Misc.over(p5.mouseX,p5.mouseY,pos.x-100,pos.y-100,200,200)) {
+            clipwidth = Misc.moveto(clipwidth, 200, 0.1)
+        } else {
+            clipwidth = Misc.moveto(clipwidth, 150, 0.1)
+        }
         this.setState({
             clip: {
                 top: pos.y,
                 left: pos.x
             },
-            cliprot: p5.frameCount * 3
+            cliprot: p5.frameCount * 3,
+            clipwidth
         })
         
         for (let i = 0; i < this.hex0.length; i++) {
@@ -275,15 +290,15 @@ class TopSketch extends React.Component {
             <div 
                 // src="paperclip.png" 
                 className="front-icons" 
+                id="paperclip"
                 style={{ 
                     ...this.state.clip, 
-                    transform: `translate(-50%,-50%)`,// `rotateZ(${this.state.cliprot}deg)`, 
-                    width: this.state.clipwidth,
-                    height: this.state.clipwidth,
+                    width: `${this.state.clipwidth}px`,
+                    height: `${this.state.clipwidth}px`,
+                    transform: `translate(-50%,-50%) rotateZ(${this.state.cliprot}deg)`, 
                     maskImage: `url(clip.svg)`,
                     WebkitMaskImage: `url(clip.svg)`,
-                    maskSize: "100px",
-                    background: `linear-gradient(14deg, rgba(117,201,200,1) 0%, rgba(128,161,212,1) 100%)`
+                    background: `linear-gradient(${-this.state.cliprot}deg, rgba(131,58,180,1) 25%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 75%)`
                 }} 
                 />
         </div>;
