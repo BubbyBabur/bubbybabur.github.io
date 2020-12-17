@@ -148,6 +148,10 @@ class V {
         let theta = Math.random() * Math.PI * 2;
         return new V(Math.cos(theta), Math.sin(theta));
     }
+
+    static POLAR(r,theta){
+        return new V(r*Math.cos(theta),r*Math.sin(theta));
+    }
 }
 
 export default V;

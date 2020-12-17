@@ -35,20 +35,20 @@ class TopSketch extends React.Component {
         this.my = 0;
 
         // Hexes
+        this.hexes = [];
+        this.hexpos = [];
 
+        this.center = new V(window.innerWidth/2,window.innerHeight/2);
+        for(let i = 0; i < 4; i++) {
+            this.hexpos.push(new V(this.center));
+            this.hexes.push(new Paths.FullRing(this.center))
+        }
+        
         this.hcenter = new V(200, window.innerHeight);
 
         this.ps = 30;
 
-        this.hex0 = [];
-
-        for (let i = 0; i < 3; i++) {
-            this.hex0.push(new Paths.HexPath(this.hcenter.x, this.hcenter.y, 
-                100 * (1.18 ** i),PI / 3 * i, 
-                1 / 100 * PI * ((-1) ** i) * (1.5 ** i), 
-                null));
-        }
-
+        // this.hex0 = new Paths.FullRing(this.hcenter);
 
         this.sketchGlobals = {
             y: 0,
@@ -64,7 +64,8 @@ class TopSketch extends React.Component {
             cliprot: 0,
             cliptextwidth: 150*2.5,
             cliptextrot: 0,
-            cliptextopacity: 1.0
+            cliptextopacity: 1.0,
+            positions: this.hexpos
         }
 
         this.started = false;
@@ -96,114 +97,9 @@ class TopSketch extends React.Component {
 
     mouseClicked(p5, e) {
 
-        const width = p5.width;
-        const height = p5.height;
-
-        // A lot of setup
-        for (let i = 0; i < this.hex0.length; i++) {
-            const hex = this.hex0[i];
-
-            const pos = hex.randPoint();
-
-            let paths = [new Paths.TimeLinearPath(pos, V.ADD(pos, V.MULT(V.RAND2D(), 300)), this.ps)];
-
-            let num = Math.floor(Math.random() * 3) + 1;
-            for (let i = 0; i < num; i++) {
-                let dist = paths[i].length() / 3 + Math.random() * paths[i].length() * 1 / 3;
-
-                let inorout = Math.random() < 0.5;
-
-                if (inorout) {
-                    // in
-                    let at = paths[i].length() - dist;
-                    let pos = paths[i].at(at);
-
-                    let t = Math.atan2(paths[i].slope.y, paths[i].slope.x)
-                    let theta = t + 2 * Math.PI / 3 + Math.PI / 6 * Math.random();
-
-                    if (Math.random() < 0.5) {
-                        // theta *= -1;
-                    }
-
-                    let dir = new V(Math.cos(theta), Math.sin(theta));
-
-
-                    let start = V.ADD(pos, V.MULT(dir, -Math.random() * 300 - 200));
-
-                    let n = Math.random() * 400;
-                    let end = V.ADD(pos, V.MULT(dir, n));
-
-                    if (i === num - 1) {
-                        // console.log(end, hex.length());
-                        while (end.x < width + hex.length() && end.y < height + hex.length() && end.x > -hex.length() && end.y > -hex.length()) {
-                            n += 50;
-                            end = V.ADD(pos, V.MULT(dir, n));
-                        }
-                    }
-
-                    let newpath = new Paths.TimeLinearPath(start, end, this.ps);
-
-                    paths.push(newpath);
-                } else {
-                    // out
-                    let at = paths[i].length() + dist;
-                    let pos = paths[i].at(at);
-
-                    let t = Math.atan2(paths[i].slope.y, paths[i].slope.x)
-                    let theta = t + Math.PI / 3 + Math.PI / 3 * Math.random();
-
-                    if (Math.random() < 0.5) {
-                        theta *= -1;
-                    }
-
-                    let dir = new V(Math.cos(theta), Math.sin(theta));
-
-                    let start = V.ADD(pos, V.MULT(dir, 200 + Math.random() * 100));
-
-                    let n = Math.random() * 400;
-                    let end = V.ADD(start, V.MULT(dir, n));
-
-                    if (i === num - 1) {
-                        // console.log(end, hex.length());
-                        while (end.x < width + hex.length() && end.y < height + hex.length() && end.x > -hex.length() && end.y > -hex.length()) {
-                            n += 50;
-                            end = V.ADD(pos, V.MULT(dir, n));
-                        }
-                    }
-
-                    let newpath = new Paths.TimeLinearPath(start, end, this.ps);
-
-                    paths.push(newpath);
-                }
-            }
-
-            for (let i = 0; i < num + 1; i++) {
-                if (paths[i].length() > 500) {
-
-                    let rad = Math.random() * paths[i].length() / 10 + 100;
-                    if (Math.random() < 0.5) {
-                        paths[i] = new Paths.PathToLoops(paths[i], [{
-                            at: 1 / 3 * paths[i].length(),
-                            radius: rad
-                        }])
-                    } else {
-                        paths[i] = new Paths.PathToLoops(paths[i], [
-                            {
-                                at: 1 / 3 * paths[i].length(),
-                                radius: rad
-                            }, {
-                                at: 1 / 3 * paths[i].length(),
-                                radius: -rad
-                            }])
-                    }
-
-                }
-
-            }
-
-            let path = Paths.ConnectPathsWithArcs(...paths)
-            hex.setPath(path);
-            hex.release();
+        // this.hex0.release(p5);
+        for(const hex of this.hexes) {
+            hex.release(p5);
         }
 
         this.started = p5.frameCount;
@@ -261,6 +157,14 @@ class TopSketch extends React.Component {
         } else {
             clipwidth = Misc.moveto(clipwidth, 150, 0.1)
         }
+
+
+        for (let i = 0; i < this.hexes.length; i++) {
+            let add = V.POLAR(Misc.map(this.sketchGlobals.y, 0, this.sketchGlobals.maxY, 200, 400), i / 4 * PI * 2 + Misc.map(this.sketchGlobals.y, 0, this.sketchGlobals.maxY, 0, PI / 2))
+            this.hexpos[i] = V.ADD(add, this.center);
+            this.hexes[i].update(p5, this.hexpos[i]);
+        }
+
         this.setState({
             clip: {
                 top: pos.y,
@@ -268,16 +172,10 @@ class TopSketch extends React.Component {
             },
             cliprot: p5.frameCount * 2,
             cliptextrot: p5.frameCount,
-            clipwidth
+            clipwidth,
+            positions: this.hexpos
         })
         
-        for (let i = 0; i < this.hex0.length; i++) {
-            const hex = this.hex0[i];
-            hex.setPos(pos);
-            hex.update(p5);
-        }
-
-        let alldone = this.hex0.every((hexpath) => hexpath.state !== 0 && hexpath.path.done)
 
         this.count += 0.5;
 
@@ -324,6 +222,27 @@ class TopSketch extends React.Component {
                 opacity={1}
                 imgurl="clip.svg"
             />
+
+            {this.state.positions.map((pos) => {
+                return <Icon
+                    width={this.state.cliptextwidth}
+                    top={pos.y}
+                    left={pos.x}
+                    opacity={this.state.cliptextopacity}
+                    rotate={this.state.cliptextrot}
+                    imgurl="links.svg"
+                />
+            })}
+            {this.state.positions.map((pos) => {
+                return <Icon
+                    width={this.state.clipwidth}
+                    top={pos.y}
+                    left={pos.x}
+                    opacity={1}
+                    rotate={this.state.cliprot}
+                    imgurl="clip.svg"
+                />
+            })}
             
         </div>;
     }

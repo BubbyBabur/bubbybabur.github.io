@@ -581,14 +581,16 @@ function ConnectPathsWithArcs(...paths) {
 }
 
 class FullRing {
-    constructor() {
-        this.hex0 = [];
+    constructor(pos) {
+        this.hexes = [];
         for (let i = 0; i < 3; i++) {
-            this.hex0.push(new HexPath(this.hcenter.x, this.hcenter.y,
+            this.hexes.push(new HexPath(pos.x, pos.y,
                 100 * (1.18 ** i), PI / 3 * i,
                 1 / 100 * PI * ((-1) ** i) * (1.5 ** i),
                 null));
         }
+
+        this.ps = 30;
     }
 
     release(p5) {
@@ -596,8 +598,8 @@ class FullRing {
         const width = p5.width;
         const height = p5.height;
 
-        for (let i = 0; i < this.hex0.length; i++) {
-            const hex = this.hex0[i];
+        for (let i = 0; i < this.hexes.length; i++) {
+            const hex = this.hexes[i];
 
             const pos = hex.randPoint();
 
@@ -704,12 +706,17 @@ class FullRing {
     }
 
     update(p5,pos) {
-        for (let i = 0; i < this.hex0.length; i++) {
-            const hex = this.hex0[i];
+        for (let i = 0; i < this.hexes.length; i++) {
+            const hex = this.hexes[i];
             hex.setPos(pos);
             hex.update(p5);
         }
     }
+
+    alldone() {
+
+        return this.hexes.every((hexpath) => hexpath.state !== 0 && hexpath.path.done)
+    }
 }
 
-export { Path, TimeLinearPath, TimeCirclePath, FollowPath, CombinedPath, StaticRope, Rope, Hexagon, HexPath, PathToLoop, PathToLoops, ConnectPathsWithArc, ConnectPathsWithArcs };
+export { Path, TimeLinearPath, TimeCirclePath, FollowPath, CombinedPath, StaticRope, Rope, Hexagon, HexPath, PathToLoop, PathToLoops, ConnectPathsWithArc, ConnectPathsWithArcs, FullRing };
