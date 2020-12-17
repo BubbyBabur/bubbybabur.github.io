@@ -6,6 +6,10 @@ import * as Misc from "../utils/misc"
 import Net from "../utils/Net"
 import V from "../utils/V"
 
+/**
+ * @todo So rerendering the dom over and over in like 30fps kills the computer /shrug so we're gonna use p5js to render instead
+ */
+
 const PI = 3.14159265358979323846264338327950288;
 
 function Icon(props) {
@@ -206,7 +210,7 @@ class TopSketch extends React.Component {
             <div id="front-sketch">
                 <Sketch setup={setup} draw={draw} windowResized={windowResized} preload={preload} />
             </div>
-            <Icon
+            {/* <Icon
                 width={this.state.cliptextwidth}
                 top={this.state.clip.top}
                 left={this.state.clip.left}
@@ -238,11 +242,11 @@ class TopSketch extends React.Component {
                     width={this.state.clipwidth}
                     top={pos.y}
                     left={pos.x}
-                    opacity={1}
+                    opacity={this.state.cliptextopacity}
                     rotate={this.state.cliprot}
                     imgurl="clip.svg"
                 />
-            })}
+            })} */}
             
         </div>;
     }
