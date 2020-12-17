@@ -2,6 +2,8 @@
 import V from "./V"
 
 const TAU = 6.28318530717958647692528676655900576839433879875021;
+const PI = 3.14159265358979323846264338327950288;
+
 
 class Path {
 
@@ -576,6 +578,138 @@ function ConnectPathsWithArcs(...paths) {
     }
 
     return path;
+}
+
+class FullRing {
+    constructor() {
+        this.hex0 = [];
+        for (let i = 0; i < 3; i++) {
+            this.hex0.push(new HexPath(this.hcenter.x, this.hcenter.y,
+                100 * (1.18 ** i), PI / 3 * i,
+                1 / 100 * PI * ((-1) ** i) * (1.5 ** i),
+                null));
+        }
+    }
+
+    release(p5) {
+
+        const width = p5.width;
+        const height = p5.height;
+
+        for (let i = 0; i < this.hex0.length; i++) {
+            const hex = this.hex0[i];
+
+            const pos = hex.randPoint();
+
+            let paths = [new TimeLinearPath(pos, V.ADD(pos, V.MULT(V.RAND2D(), 300)), this.ps)];
+
+            let num = Math.floor(Math.random() * 3) + 1;
+            for (let i = 0; i < num; i++) {
+                let dist = paths[i].length() / 3 + Math.random() * paths[i].length() * 1 / 3;
+
+                let inorout = Math.random() < 0.5;
+
+                if (inorout) {
+                    // in
+                    let at = paths[i].length() - dist;
+                    let pos = paths[i].at(at);
+
+                    let t = Math.atan2(paths[i].slope.y, paths[i].slope.x)
+                    let theta = t + 2 * Math.PI / 3 + Math.PI / 6 * Math.random();
+
+                    if (Math.random() < 0.5) {
+                        // theta *= -1;
+                    }
+
+                    let dir = new V(Math.cos(theta), Math.sin(theta));
+
+
+                    let start = V.ADD(pos, V.MULT(dir, -Math.random() * 300 - 200));
+
+                    let n = Math.random() * 400;
+                    let end = V.ADD(pos, V.MULT(dir, n));
+
+                    if (i === num - 1) {
+                        // console.log(end, hex.length());
+                        while (end.x < width + hex.length() && end.y < height + hex.length() && end.x > -hex.length() && end.y > -hex.length()) {
+                            n += 50;
+                            end = V.ADD(pos, V.MULT(dir, n));
+                        }
+                    }
+
+                    let newpath = new TimeLinearPath(start, end, this.ps);
+
+                    paths.push(newpath);
+                } else {
+                    // out
+                    let at = paths[i].length() + dist;
+                    let pos = paths[i].at(at);
+
+                    let t = Math.atan2(paths[i].slope.y, paths[i].slope.x)
+                    let theta = t + Math.PI / 3 + Math.PI / 3 * Math.random();
+
+                    if (Math.random() < 0.5) {
+                        theta *= -1;
+                    }
+
+                    let dir = new V(Math.cos(theta), Math.sin(theta));
+
+                    let start = V.ADD(pos, V.MULT(dir, 200 + Math.random() * 100));
+
+                    let n = Math.random() * 400;
+                    let end = V.ADD(start, V.MULT(dir, n));
+
+                    if (i === num - 1) {
+                        // console.log(end, hex.length());
+                        while (end.x < width + hex.length() && end.y < height + hex.length() && end.x > -hex.length() && end.y > -hex.length()) {
+                            n += 50;
+                            end = V.ADD(pos, V.MULT(dir, n));
+                        }
+                    }
+
+                    let newpath = new TimeLinearPath(start, end, this.ps);
+
+                    paths.push(newpath);
+                }
+            }
+
+            for (let i = 0; i < num + 1; i++) {
+                if (paths[i].length() > 500) {
+
+                    let rad = Math.random() * paths[i].length() / 10 + 100;
+                    if (Math.random() < 0.5) {
+                        paths[i] = new PathToLoops(paths[i], [{
+                            at: 1 / 3 * paths[i].length(),
+                            radius: rad
+                        }])
+                    } else {
+                        paths[i] = new PathToLoops(paths[i], [
+                            {
+                                at: 1 / 3 * paths[i].length(),
+                                radius: rad
+                            }, {
+                                at: 1 / 3 * paths[i].length(),
+                                radius: -rad
+                            }])
+                    }
+
+                }
+
+            }
+
+            let path = ConnectPathsWithArcs(...paths)
+            hex.setPath(path);
+            hex.release();
+        }
+    }
+
+    update(p5,pos) {
+        for (let i = 0; i < this.hex0.length; i++) {
+            const hex = this.hex0[i];
+            hex.setPos(pos);
+            hex.update(p5);
+        }
+    }
 }
 
 export { Path, TimeLinearPath, TimeCirclePath, FollowPath, CombinedPath, StaticRope, Rope, Hexagon, HexPath, PathToLoop, PathToLoops, ConnectPathsWithArc, ConnectPathsWithArcs };

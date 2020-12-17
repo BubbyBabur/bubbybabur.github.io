@@ -8,6 +8,22 @@ import V from "../utils/V"
 
 const PI = 3.14159265358979323846264338327950288;
 
+function Icon(props) {
+    return <div
+        className="front-icons"
+        style={{
+            left: props.left,
+            top: props.top,
+            width: `${props.width}px`,
+            height: `${props.width}px`,
+            opacity: `${props.opacity}`,
+            transform: `translate(-50%,-50%) rotateZ(${props.rotate}deg)`,
+            maskImage: `url(${props.imgurl})`,
+            WebkitMaskImage: `url(${props.imgurl})`,
+            background: `linear-gradient(${-props.rotate}deg, rgba(248,117,117,1) 0%, rgba(255,169,163,1) 75%)`
+        }}
+    />
+}
 
 class TopSketch extends React.Component {
 
@@ -261,9 +277,7 @@ class TopSketch extends React.Component {
             hex.update(p5);
         }
 
-
         let alldone = this.hex0.every((hexpath) => hexpath.state !== 0 && hexpath.path.done)
-        // console.log(alldone)
 
         this.count += 0.5;
 
@@ -294,33 +308,22 @@ class TopSketch extends React.Component {
             <div id="front-sketch">
                 <Sketch setup={setup} draw={draw} windowResized={windowResized} preload={preload} />
             </div>
-            <div
-                className="front-icons front-text-icons"
-                id="paperclip-text"
-                style={{
-                    ...this.state.clip,
-                    width: `${this.state.cliptextwidth}px`,
-                    height: `${this.state.cliptextwidth}px`,
-                    opacity: `${this.state.cliptextopacity}`,
-                    transform: `translate(-50%,-50%) rotateZ(${this.state.cliptextrot}deg)`,
-                    maskImage: `url(links.svg)`,
-                    WebkitMaskImage: `url(links.svg)`,
-                    background: `linear-gradient(${-this.state.cliptextrot}deg, rgba(248,117,117,1) 0%, rgba(255,169,163,1) 75%)`
-                }}
+            <Icon
+                width={this.state.cliptextwidth}
+                top={this.state.clip.top}
+                left={this.state.clip.left}
+                opacity={this.state.cliptextopacity}
+                rotate={this.state.cliptextrot}
+                imgurl="links.svg"
+             />
+            <Icon 
+                width={this.state.clipwidth}
+                top={this.state.clip.top}
+                left={this.state.clip.left}
+                rotate={this.state.cliprot}
+                opacity={1}
+                imgurl="clip.svg"
             />
-            <div 
-                className="front-icons" 
-                id="paperclip"
-                style={{ 
-                    ...this.state.clip, 
-                    width: `${this.state.clipwidth}px`,
-                    height: `${this.state.clipwidth}px`,
-                    transform: `translate(-50%,-50%) rotateZ(${this.state.cliprot}deg)`, 
-                    maskImage: `url(clip.svg)`,
-                    WebkitMaskImage: `url(clip.svg)`,
-                    background: `linear-gradient(${-this.state.cliprot}deg, rgba(248,117,117,1) 0%, rgba(255,169,163,1) 75%)`
-                }} 
-                />
             
         </div>;
     }
