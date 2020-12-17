@@ -17,6 +17,10 @@
   -webkit-mask-size: 100%;
 }
 
+.front-text-icons {
+  transition: opacity 0.5s;
+}
+
 #front-sketch {
   position: absolute;
 }

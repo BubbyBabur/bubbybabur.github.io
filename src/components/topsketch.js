@@ -45,7 +45,10 @@ class TopSketch extends React.Component {
                 top: 0,
             },
             clipwidth: 150,
-            cliprot: 0
+            cliprot: 0,
+            cliptextwidth: 150*2.5,
+            cliptextrot: 0,
+            cliptextopacity: 1.0
         }
 
         this.started = false;
@@ -188,6 +191,10 @@ class TopSketch extends React.Component {
         }
 
         this.started = p5.frameCount;
+
+        this.setState({
+            cliptextopacity: 0
+        })
     }
 
     preload(p5) {
@@ -225,7 +232,6 @@ class TopSketch extends React.Component {
         p5.strokeWeight(1);
         p5.noFill();
 
-
         const drop = new V(0, -this.sketchGlobals.y);
         const pos = V.ADD(this.hcenter, drop);
 
@@ -244,7 +250,8 @@ class TopSketch extends React.Component {
                 top: pos.y,
                 left: pos.x
             },
-            cliprot: p5.frameCount * 3,
+            cliprot: p5.frameCount * 2,
+            cliptextrot: p5.frameCount,
             clipwidth
         })
         
@@ -287,8 +294,21 @@ class TopSketch extends React.Component {
             <div id="front-sketch">
                 <Sketch setup={setup} draw={draw} windowResized={windowResized} preload={preload} />
             </div>
+            <div
+                className="front-icons front-text-icons"
+                id="paperclip-text"
+                style={{
+                    ...this.state.clip,
+                    width: `${this.state.cliptextwidth}px`,
+                    height: `${this.state.cliptextwidth}px`,
+                    opacity: `${this.state.cliptextopacity}`,
+                    transform: `translate(-50%,-50%) rotateZ(${this.state.cliptextrot}deg)`,
+                    maskImage: `url(links.svg)`,
+                    WebkitMaskImage: `url(links.svg)`,
+                    background: `linear-gradient(${-this.state.cliptextrot}deg, rgba(248,117,117,1) 0%, rgba(255,169,163,1) 75%)`
+                }}
+            />
             <div 
-                // src="paperclip.png" 
                 className="front-icons" 
                 id="paperclip"
                 style={{ 
@@ -298,9 +318,10 @@ class TopSketch extends React.Component {
                     transform: `translate(-50%,-50%) rotateZ(${this.state.cliprot}deg)`, 
                     maskImage: `url(clip.svg)`,
                     WebkitMaskImage: `url(clip.svg)`,
-                    background: `linear-gradient(${-this.state.cliprot}deg, rgba(131,58,180,1) 25%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 75%)`
+                    background: `linear-gradient(${-this.state.cliprot}deg, rgba(248,117,117,1) 0%, rgba(255,169,163,1) 75%)`
                 }} 
                 />
+            
         </div>;
     }
     
