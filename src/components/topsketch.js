@@ -12,23 +12,6 @@ import V from "../utils/V"
 
 const PI = 3.14159265358979323846264338327950288;
 
-function Icon(props) {
-    return <div
-        className="front-icons"
-        style={{
-            left: props.left,
-            top: props.top,
-            width: `${props.width}px`,
-            height: `${props.width}px`,
-            opacity: `${props.opacity}`,
-            transform: `translate(-50%,-50%) rotateZ(${props.rotate}deg)`,
-            maskImage: `url(${props.imgurl})`,
-            WebkitMaskImage: `url(${props.imgurl})`,
-            background: `linear-gradient(${-props.rotate}deg, rgba(248,117,117,1) 0%, rgba(255,169,163,1) 75%)`
-        }}
-    />
-}
-
 class TopSketch extends React.Component {
 
     constructor(props) {
@@ -114,7 +97,7 @@ class TopSketch extends React.Component {
     }
 
     preload(p5) {
-        // this.clip = p5.loadImage("paperclip.png")
+        this.clip = p5.loadImage("paperclip.png")
         // console.log(this.clip)
     }
 
