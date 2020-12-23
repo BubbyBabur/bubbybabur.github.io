@@ -1,19 +1,10 @@
 
-$color: #ff0000;
-$background: #141414;
-
-html {
-    overscroll-behavior-y: none;
-}
-
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding: 0px;
   margin: 0px;
-  color: $color;
-  background-color: $background;
 }
 
 code {
