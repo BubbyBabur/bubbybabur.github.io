@@ -4,6 +4,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   padding: 0px;
   margin: 0px;
+  background-color: black;
 }
 
 code {

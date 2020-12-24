@@ -1,0 +1,34 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+.fullsize {
+  width: 100vw;
+  height: 100vh;
+}
+
+#front-roger-fan {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  z-index: 2;
+  font-family: Bebas Neue, sans-serif;
+  font-size: 6em;
+  letter-spacing: 0.3em;
+}
+
+#Projects {
+  background-color: #141414;
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  color: white;
+  font-family: Bebas Neue, sans-serif;
+  margin: 40px auto;
+  text-align: center;
+  letter-spacing: 0.2em;
+  font-size: 3em;
+}
+/*# sourceMappingURL=app.css.map */
