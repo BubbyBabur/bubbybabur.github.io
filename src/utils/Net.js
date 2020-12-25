@@ -17,8 +17,10 @@ class Net extends React.Component {
     }
 
     mouseMoved(p5, e) {
-        this.count += (Math.abs(p5.movedX) + Math.abs(p5.movedY)) / 20;
-        requestAnimationFrame(() => this.draw(p5));
+        if(p5.movedX) {
+            this.count += (Math.abs(p5.movedX) + Math.abs(p5.movedY)) / 20;
+            requestAnimationFrame(() => this.draw(p5));
+        }
     }
 
     mouseWheel(p5, e) {
@@ -40,7 +42,6 @@ class Net extends React.Component {
         p5.frameRate(30);
         
         for(const c of cs) {
-
             c.mouseMoved((e) => {
                 this.mouseMoved(p5, e);
             })
@@ -68,6 +69,9 @@ class Net extends React.Component {
                     (noisefunc(i * this.d * 10, j * this.d * 10, this.count / 500 + this.r) + j - 1) * this.d));
             }
         }
+
+
+        // console.log(positions[0][0], p5.width / this.d);
 
         p5.strokeWeight(1);
 
@@ -109,11 +113,22 @@ class Net extends React.Component {
             this.preload(p5);
         }
 
-        /**
-         * @todo somehow fix the div
-         */
-        return <div style={{position:`absolute`, width:`100vw`,height:`100vh`, overflow:`hidden`, WebkitMask:`url('crack.svg') left / auto 80% no-repeat`}}>
-            <Sketch setup={setup} draw={draw} preload={preload} windowResized={windowResized} /> 
+        return <div style={{
+            position:`absolute`,
+            width: `100vw`,
+            height: `100vh`,
+            WebkitMask: `url('crack.svg') left / auto 65% no-repeat`
+        }}> 
+            <div style={{
+                position:`fixed`, 
+                width:`100vw`,
+                height:`100vh`, 
+                overflow:`hidden`,
+                zIndex: -1,
+                backgroundAttachment: `fixed`,
+                }}>
+                <Sketch setup={setup} draw={draw} preload={preload} windowResized={windowResized} /> 
+            </div>
         </div>
         
     }
