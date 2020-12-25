@@ -1,6 +1,7 @@
 import React from "react";
 import Net from "./utils/Net";
 import './css/app.css'
+import projectdata from './data/projects.json';
 
 class Front extends React.Component {
     render() {
@@ -82,7 +83,7 @@ class SideBarController extends React.Component {
                 <div>
                     <Covering active={true} />
                     <SideBar open={true} close={() => { this.close() }} />
-                    <a onClick={() => { this.close() }}><Hamburgalar /></a>
+                    <div onClick={() => { this.close() }}><Hamburgalar /></div>
                 </div>
             )
         } else {
@@ -90,27 +91,63 @@ class SideBarController extends React.Component {
                 <div>
                     <Covering active={false} />
                     <SideBar open={false} close={() => { this.close() }} />
-                    <a onClick={() => { this.open() }}><Hamburgalar /></a>
+                    <div onClick={() => { this.open() }}><Hamburgalar /></div>
                 </div>
             )
         }
     }
 }
 
-class Projects extends React.Component {
+class Link extends React.Component {
+    render() {
+        return (
+            <a href={`${this.props.data.link}`} className="project-link">
+                <img 
+                    alt={`${this.props.data.linkname}`} 
+                    src={`icons/${this.props.data.linkname}.svg`} 
+                    className="project-link-img"
+                />
+            </a>
+        )
+    }
+}
 
+class Project extends React.Component {
+    render() {
+        return (
+            <div className="project">
+                <img className="project-image" alt={`${this.props.data.picture}`} src={`images/projects/${this.props.data.picture}`} />
+                <div className="project-info">
+                    <span className="project-title">{this.props.data.name}</span>
+                    <span className="project-desc">{this.props.data.description}</span>
+                    <div className="project-links">
+                        {this.props.data.links.map(a => <Link data={a} key={a.linkname} />)}
+                    </div>
+                </div>
+            </div>
+        )
+    }
+}
+
+class Projects extends React.Component {
     
     render() {
         return (
             <div>
-                <div id="Projects" className="fullsize">
+                <div id="Projects">
                     <h1>Projects</h1>
-                    <p>Hello!</p>
+                    <div id="project-container">
+                        {projectdata.map(a => <Project data={a} key={a.name} />) }
+                    </div>
                 </div>
             </div>
         );
     }
 }
+
+// class Footer extends React.Component {
+
+// }
 
 class App extends React.Component {
     constructor(props) {

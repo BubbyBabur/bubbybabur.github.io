@@ -1,9 +1,9 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Amaranth&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 
-
-$selectioncolor: #ffffff;
+$selectioncolor: #ff0000;
 
 ::selection {
   background: $selectioncolor; /* WebKit/Blink Browsers */
@@ -43,6 +43,63 @@ $selectioncolor: #ffffff;
     background-color: #141414;
     display: flex;
     flex-direction: column;
+    width: 100vw;
+}
+
+#project-container {
+    display: flex;
+    flex-direction: row;
+    width: 80vw;
+    margin: 0px auto 100px auto;
+    flex-wrap: wrap;
+}
+
+.project {
+    margin: 10px auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-image {
+    width: 300px;
+    margin:none;
+}
+
+.project-info {
+    background-color: white;
+    width: 300px;
+    margin:none;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-info span {
+    margin: 10px 10px 0px 10px;
+}
+
+.project-title {
+    font-family: Bebas Neue;
+    font-size: 2rem;
+}
+
+.project-desc {
+    font-family: Lato;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.project-links {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+}
+.project-link {
+    margin: 0px 10px 0px 0px;
+}
+
+.project-link-img {
+    height: 30px;
+    margin:none;
 }
 
 #sandwich {
@@ -108,7 +165,7 @@ $selectioncolor: #ffffff;
 h1 {
     color: white;
     font-family: Bebas Neue, sans-serif;
-    margin: 40px auto;
+    margin: 70px auto;
     text-align: center;
     letter-spacing: 0.2em;
     font-size: 3em;

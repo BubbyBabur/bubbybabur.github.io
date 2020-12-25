@@ -1,0 +1,28 @@
+[
+    {
+        "picture": "PeepsBot.png",
+        "name": "PeepsBot",
+        "description": "A Discord Bot with many functions, including giving alerts from Schoology, server management, and a lot of other random things.",
+        "links": [
+            { 
+                "linkname": "Github",
+                "link": "https://github.com/BubbyBabur/PeepsBot" 
+            }
+        ]
+    },
+    {
+        "picture": "ultttt.png",
+        "name": "Ultimate Tic Tac Toe",
+        "description": "A website for playing Ultimate Tic Tac Toe against friends online using Firestore.",
+        "links": [
+            {
+                "linkname": "Github",
+                "link": "https://github.com/BubbyBabur/ulttictactoe"
+            },
+            {
+                "linkname": "Link",
+                "link": "https://bubbybabur.github.io/ulttictactoe"
+            }
+        ]
+    }
+]
