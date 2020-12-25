@@ -18,7 +18,7 @@ class Front extends React.Component {
 class Hamburgalar extends React.Component {
     render() {
         return (
-            <img id="sandwich" src="sandwich.svg"></img>
+            <img alt="hamburger" id="sandwich" src="icons/sandwich.svg"></img>
         )
     }
 }
@@ -29,11 +29,22 @@ class SideBar extends React.Component {
             <div id="sidebar" style={{
                 transform: this.props.open ? `` : `translate(-100%,0px)`
             }}>
-                <img src="X.svg" id="SideBarX" onClick={this.props.close} />
-                <a href="">About</a>
-                <a href="">Work</a>
-                <a href="">Links</a>
+                <img alt="X" src="icons/X.svg" id="SideBarX" onClick={this.props.close} />
+                <a href="/">About</a>
+                <a href="/">Work</a>
+                <a href="/">Links</a>
             </div>
+        )
+    }
+}
+
+class Covering extends React.Component {
+    render() {
+        return (
+            <div className="fullsize velvet" style={{
+                opacity: this.props.active ? 0.3 : 0,
+                visibility: this.props.active ? "visible" : "hidden"
+            }} />
         )
     }
 }
@@ -69,6 +80,7 @@ class SideBarController extends React.Component {
         if(this.state.open ) {
             return (
                 <div>
+                    <Covering active={true} />
                     <SideBar open={true} close={() => { this.close() }} />
                     <a onClick={() => { this.close() }}><Hamburgalar /></a>
                 </div>
@@ -76,6 +88,7 @@ class SideBarController extends React.Component {
         } else {
             return (
                 <div>
+                    <Covering active={false} />
                     <SideBar open={false} close={() => { this.close() }} />
                     <a onClick={() => { this.open() }}><Hamburgalar /></a>
                 </div>

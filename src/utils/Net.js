@@ -117,7 +117,7 @@ class Net extends React.Component {
             position:`absolute`,
             width: `100vw`,
             height: `100vh`,
-            WebkitMask: `url('crack.svg') left / auto 65% no-repeat`
+            WebkitMask: `url('icons/crack.svg') left / auto 65% no-repeat`
         }}> 
             <div style={{
                 position:`fixed`, 

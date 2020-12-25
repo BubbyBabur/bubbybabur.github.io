@@ -17,6 +17,15 @@ $selectioncolor: #ffffff;
     height: 100vh;
 }
 
+.velvet {
+    background-color: black;
+    position:fixed;
+    top:0px;
+    left:0px;
+    z-index: 2;
+    // transition: opacity 0.3s;
+}
+
 #front-roger-fan {
     position: absolute;
     left: 50%;
