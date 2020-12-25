@@ -50,12 +50,21 @@
   width: 80vw;
   margin: 0px auto 100px auto;
   flex-wrap: wrap;
+  perspective: 800px;
+  -webkit-perspective: 800px;
 }
 
 .project {
   margin: 10px auto;
   display: flex;
   flex-direction: column;
+  transform: none;
+  transition: transform 0.3s;
+  transform-style: preserve-3d;
+}
+
+.project:hover {
+  transform: translateZ(20px) rotateX(10deg);
 }
 
 .project-image {
