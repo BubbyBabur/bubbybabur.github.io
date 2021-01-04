@@ -113,23 +113,11 @@ class Net extends React.Component {
             this.preload(p5);
         }
 
-        return <div style={{
-            position:`absolute`,
-            width: `100vw`,
-            height: `100vh`,
-            WebkitMask: `url('icons/crack.svg') left / auto 65% no-repeat`
-        }}> 
-            <div style={{
-                position:`fixed`, 
-                width:`100vw`,
-                height:`100vh`, 
-                overflow:`hidden`,
-                zIndex: -1,
-                backgroundAttachment: `fixed`,
-                }}>
+        return (
+            <div id="net-div">
                 <Sketch setup={setup} draw={draw} preload={preload} windowResized={windowResized} /> 
             </div>
-        </div>
+        )
         
     }
 }

@@ -9,6 +9,9 @@ class Front extends React.Component {
             <div>
                 <Net />
                 <div id="front" className="fullsize">
+                    <div id="front-background" style={{
+                        WebkitMask: `url(./icons/front-crack-negative-mask.svg) left / auto 100% no-repeat`
+                    }} />
                     <span id="front-roger-fan">Roger Fan</span>
                 </div>
             </div>
