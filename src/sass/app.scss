@@ -7,6 +7,10 @@ $selectioncolor: #ff0000;
 
 $second-background-color: #202020;
 
+html {
+  scroll-behavior: smooth;
+}
+
 ::selection {
   background: $selectioncolor; /* WebKit/Blink Browsers */
 }
@@ -55,9 +59,23 @@ $second-background-color: #202020;
     letter-spacing: 0.3em;
 }
 
+#down-icon {
+    position:absolute;
+    top:100vh;
+    left:50vw;
+    transform: translate(-50%,-50%);
+    width: 50px;
+    transition: transform 0.5s ease-in-out;
+}
+
+@media(hover: hover) and (pointer: fine) {
+    #down-icon:hover {
+        transform: translate(-50%,-50%) rotateZ(360deg);
+    }
+}
+
 #Projects {
-    background-color: $second-background-color
-;
+    background-color: $second-background-color;
     display: flex;
     flex-direction: column;
     width: 100vw;
@@ -208,6 +226,13 @@ $second-background-color: #202020;
     flex-direction: column;
 
     padding: 30px;
+}
+
+#Trinkets {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    background-color: $second-background-color;
 }
 
 #sidebar * {

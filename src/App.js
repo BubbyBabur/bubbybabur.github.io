@@ -2,6 +2,7 @@ import React from "react";
 import Net from "./utils/Net";
 import './css/app.css'
 import projectdata from './data/projects.json';
+import trinketdata from './data/trinkets.json';
 
 class Front extends React.Component {
     render() {
@@ -14,9 +15,16 @@ class Front extends React.Component {
                     }} />
                     <span id="front-roger-fan">Roger Fan</span>
                 </div>
+                <DownIcon />
             </div>
         );
     }
+}
+
+function DownIcon(props) {
+    return (
+        <a href="#Projects"> <img id="down-icon" src="icons/Down-Icon.svg" /></a>
+    )
 }
 
 class Hamburgalar extends React.Component {
@@ -157,6 +165,25 @@ function SecondCrack(props) {
     )
 }
 
+function Trinket(props) {
+
+    const data = props.data;
+    return (
+        <div>
+            
+        </div>
+    )
+}
+
+function Trinkets(props) {
+    return (
+        <div id="Trinkets">
+            <h1>Trinkets</h1>
+            {trinketdata.map(a => <Trinket data={a} key={a.name} />)}
+        </div>
+    )
+}
+
 // class Footer extends React.Component {
 
 // }
@@ -174,6 +201,7 @@ class App extends React.Component {
                 <Projects />
                 <SecondCrack />
                 <SideBarController />
+                <Trinkets />
             </div>
         );
     }
