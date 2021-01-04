@@ -49,7 +49,7 @@ $selectioncolor: #ff0000;
     display: flex;
     flex-direction: row;
     width: 80vw;
-    margin: 0px auto 100px auto;
+    margin: 0px auto 150px auto;
     flex-wrap: wrap;
     align-items: flex-start;
 
@@ -63,11 +63,20 @@ $selectioncolor: #ff0000;
     flex-direction: column;
 
     transform: none;
-    transition: transform 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s;
     transform-style: preserve-3d;
+
+    box-shadow: 10px 30px 10px 10px black;
 
     position:relative;
     overflow:hidden;
+}
+
+@media(hover: hover) and (pointer: fine) {
+    .project:hover {
+        transform: translateZ(20px) rotateX(10deg);
+        box-shadow: 10px 50px 20px 20px black;
+    }
 }
 
 .project::after {
@@ -86,12 +95,8 @@ $selectioncolor: #ff0000;
 }
 
 @media(hover: hover) and (pointer: fine) {
-    .project:hover {
-        transform: translateZ(20px) rotateX(10deg);
-    }
-
     .project:hover::after {
-        transform: scale(2) translate(0px,20px);
+        transform: scale(2) translate(-10px,30px);
     }
 }
 
