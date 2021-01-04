@@ -62,6 +62,8 @@
   transform: none;
   transition: transform 0.3s;
   transform-style: preserve-3d;
+  position: relative;
+  overflow: hidden;
 }
 
 .project::after {
@@ -72,8 +74,8 @@
   top: 0;
   left: 0;
   z-index: 2;
-  background: linear-gradient(225deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.3) 20%, rgba(255, 255, 255, 0) 100%);
-  transform: none;
+  background: linear-gradient(225deg, rgba(255, 255, 255, 0.05) 30%, rgba(255, 255, 255, 0.15) 35%, rgba(255, 255, 255, 0) 50%);
+  transform: scale(2);
   transition: transform 0.3s;
 }
 
@@ -82,7 +84,7 @@
     transform: translateZ(20px) rotateX(10deg);
   }
   .project:hover::after {
-    transform: translate(0px, 20px);
+    transform: scale(2) translate(0px, 20px);
   }
 }
 
