@@ -53,7 +53,7 @@
 }
 
 #Projects {
-  background-color: #141414;
+  background-color: #202020;
   display: flex;
   flex-direction: column;
   width: 100vw;
@@ -149,6 +149,10 @@
 .project-link-img {
   height: 30px;
   margin: none;
+}
+
+#second-crack {
+  background-color: #202020;
 }
 
 #sandwich {

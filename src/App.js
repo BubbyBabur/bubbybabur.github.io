@@ -54,7 +54,6 @@ class Covering extends React.Component {
 }
 
 class SideBarController extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -148,6 +147,16 @@ class Projects extends React.Component {
     }
 }
 
+function SecondCrack(props) {
+    return (
+        <div id="second-crack" style={{
+            height: `300px`,
+            width: `100vw`,
+            WebkitMask: `url(./icons/second-crack-negative-mask.svg) left / auto 100% no-repeat`
+        }} />
+    )
+}
+
 // class Footer extends React.Component {
 
 // }
@@ -163,6 +172,7 @@ class App extends React.Component {
             <div id="content"> 
                 <Front />
                 <Projects />
+                <SecondCrack />
                 <SideBarController />
             </div>
         );

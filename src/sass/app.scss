@@ -5,6 +5,8 @@
 
 $selectioncolor: #ff0000;
 
+$second-background-color: #202020;
+
 ::selection {
   background: $selectioncolor; /* WebKit/Blink Browsers */
 }
@@ -23,10 +25,6 @@ $selectioncolor: #ff0000;
     top:0px;
     left:0px;
     z-index: 2;
-}
-
-#front {
-    // backgorund
 }
 
 #front-background {
@@ -58,7 +56,8 @@ $selectioncolor: #ff0000;
 }
 
 #Projects {
-    background-color: #141414;
+    background-color: $second-background-color
+;
     display: flex;
     flex-direction: column;
     width: 100vw;
@@ -159,6 +158,12 @@ $selectioncolor: #ff0000;
 .project-link-img {
     height: 30px;
     margin:none;
+}
+
+
+#second-crack {
+    background-color: $second-background-color
+;
 }
 
 #sandwich {

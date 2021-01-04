@@ -38,6 +38,7 @@ class Net extends React.Component {
         cs.push( p5.createCanvas(p5.windowWidth, p5.windowHeight).parent(parent) );
 
         cs.push(p5.select("#front"));
+        cs.push(p5.select("#second-crack"));
 
         p5.frameRate(30);
         
