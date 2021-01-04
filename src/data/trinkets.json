@@ -1,0 +1,36 @@
+[
+    {
+        "picture": "color-ai.png",
+        "name": "Color AI",
+        "description": "Using AI to decide what color a RGB value is.",
+        "links": [
+            {
+                "linkname": "Github",
+                "link": "https://github.com/BubbyBabur/Sketches/tree/master/sketches/neural-net-colors"
+            },
+            {
+                "linkname": "Link",
+                "link": "https://bubbybabur.github.io/Sketches/sketches/neural-net-colors/"
+            },
+            {
+                "linkname": "p5",
+                "link": "https://editor.p5js.org/bubbybabur/sketches/Ibq1033Yz"
+            }
+        ]
+    },
+    {
+        "picture": "countdown-2021.png",
+        "name": "Countdown to 2021",
+        "description": "A relatively simple countdown to 2021, just to test some features out.",
+        "links": [
+            {
+                "linkname": "Github",
+                "link": "https://github.com/BubbyBabur/Countdown2021"
+            },
+            {
+                "linkname": "Link",
+                "link": "https://bubbybabur.github.io/Countdown2021/"
+            }
+        ]
+    }
+]
