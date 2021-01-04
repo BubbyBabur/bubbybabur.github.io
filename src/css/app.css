@@ -159,6 +159,7 @@ html {
   display: flex;
   flex-direction: row;
   margin: 10px;
+  z-index: 3;
 }
 
 .project-link {
