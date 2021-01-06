@@ -236,6 +236,46 @@ html {
     background-color: $second-background-color;
 }
 
+#trinket-container {
+    flex-direction: row;
+    display: flex;
+    width: 80vw;
+    margin: 0px auto 100px auto;
+}
+
+$trinket-size: 200px;
+
+.trinket {
+    margin: 0px auto 0px auto;
+    width: $trinket-size;
+    height: $trinket-size;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.trinket-img {
+    width: 100%;
+}
+
+.trinket-label-container {
+    position: absolute;
+    width: $trinket-size;
+    height: $trinket-size;
+}
+
+.trinket-label {
+    position: absolute;
+    bottom: 0px;
+    color: white;
+    font-family: "Lato";
+    font-style: italic;
+    z-index: 100;
+    right: 0px;
+    text-align: right;
+    padding: 5px 10px;
+    background-color: black;
+}
+
 #sidebar * {
     white-space: nowrap;
     margin: 30px auto;

@@ -220,6 +220,44 @@ html {
   background-color: #202020;
 }
 
+#trinket-container {
+  flex-direction: row;
+  display: flex;
+  width: 80vw;
+  margin: 0px auto 100px auto;
+}
+
+.trinket {
+  margin: 0px auto 0px auto;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.trinket-img {
+  width: 100%;
+}
+
+.trinket-label-container {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+}
+
+.trinket-label {
+  position: absolute;
+  bottom: 0px;
+  color: white;
+  font-family: "Lato";
+  font-style: italic;
+  z-index: 100;
+  right: 0px;
+  text-align: right;
+  padding: 5px 10px;
+  background-color: black;
+}
+
 #sidebar * {
   white-space: nowrap;
   margin: 30px auto;

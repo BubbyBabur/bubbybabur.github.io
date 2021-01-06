@@ -23,7 +23,7 @@ class Front extends React.Component {
 
 function DownIcon(props) {
     return (
-        <a href="#Projects"> <img id="down-icon" src="icons/Down-Icon.svg" /></a>
+        <a href="#Projects"> <img alt="down" id="down-icon" src="icons/Down-Icon.svg" /></a>
     )
 }
 
@@ -169,8 +169,11 @@ function Trinket(props) {
 
     const data = props.data;
     return (
-        <div>
-            
+        <div className="trinket">
+            <div className="trinket-label-container">
+                <div className="trinket-label">{data.name}</div>
+            </div>
+            <img className="trinket-img" alt={data.name} src={`./images/trinkets/${data.picture}`} />
         </div>
     )
 }
@@ -179,7 +182,9 @@ function Trinkets(props) {
     return (
         <div id="Trinkets">
             <h1>Trinkets</h1>
-            {trinketdata.map(a => <Trinket data={a} key={a.name} />)}
+            <div id="trinket-container">
+                {trinketdata.map(a => <Trinket data={a} key={a.name} />)}
+            </div>
         </div>
     )
 }
