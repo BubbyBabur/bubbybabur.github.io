@@ -172,6 +172,10 @@ function Trinket(props) {
         <div className="trinket">
             <div className="trinket-label-container">
                 <div className="trinket-label">{data.name}</div>
+                <div className="trinket-info">
+                    <div className="trinket-title">{data.name}</div>
+                    <div className="trinket-description">{data.description}</div>
+                </div>
             </div>
             <img className="trinket-img" alt={data.name} src={`./images/trinkets/${data.picture}`} />
         </div>
