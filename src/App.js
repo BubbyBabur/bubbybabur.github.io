@@ -1,64 +1,63 @@
 import React from "react";
 import Net from "./utils/Net";
+
+// LOL css imports
 import './css/app.css'
+import './css/front.css'
+import './css/projects.css'
+import './css/trinkets.css'
+import './css/menu.css'
+
 import projectdata from './data/projects.json';
 import trinketdata from './data/trinkets.json';
 
-class Front extends React.Component {
-    render() {
-        return (
-            <div>
-                <Net />
-                <div id="front" className="fullsize">
-                    <div id="front-background" style={{
-                        WebkitMask: `url(./icons/front-crack-negative-mask.svg) left / auto 100% no-repeat`
-                    }} />
-                    <span id="front-roger-fan">Roger Fan</span>
-                </div>
-                <DownIcon />
+function Front(props) {
+    return (
+        <div>
+            <Net />
+            <div id="front" className="fullsize">
+                <div id="front-background" style={{
+                    WebkitMask: `url(./icons/front-crack-negative-mask.svg) left / auto 100% no-repeat`
+                }} />
+                <span id="front-roger-fan">Roger Fan</span>
             </div>
-        );
-    }
+            <DownIcon />
+        </div>
+    );
 }
 
 function DownIcon(props) {
     return (
-        <a href="#Projects"> <img alt="down" id="down-icon" src="icons/Down-Icon.svg" /></a>
+        <a href="#projects"> <img alt="down" id="down-icon" src="icons/Down-Icon.svg" /></a>
     )
 }
 
-class Hamburgalar extends React.Component {
-    render() {
-        return (
-            <img alt="hamburger" id="sandwich" src="icons/sandwich.svg"></img>
-        )
-    }
+function Hamburgalar(props) {
+    return (
+        <img alt="hamburger" id="sandwich" src="icons/sandwich.svg"></img>
+    )
 }
 
-class SideBar extends React.Component {
-    render() {
-        return (
-            <div id="sidebar" style={{
-                transform: this.props.open ? `` : `translate(-100%,0px)`
-            }}>
-                <img alt="X" src="icons/X.svg" id="SideBarX" onClick={this.props.close} />
-                <a href="/">About</a>
-                <a href="/">Work</a>
-                <a href="/">Links</a>
-            </div>
-        )
-    }
+function SideBar(props) {
+    return (
+        <div id="sidebar" style={{
+            transform: props.open ? `` : `translate(-100%,0px)`
+        }}>
+            <img alt="X" src="icons/X.svg" id="SideBarX" onClick={props.close} />
+            <a href="/">About</a>
+            <a href="/">Work</a>
+            <a href="/">Links</a>
+        </div>
+    )
 }
 
-class Covering extends React.Component {
-    render() {
-        return (
-            <div className="fullsize velvet" style={{
-                opacity: this.props.active ? 0.3 : 0,
-                visibility: this.props.active ? "visible" : "hidden"
-            }} />
-        )
-    }
+function Covering (props) {
+    return (
+        <div className="fullsize velvet" style={{
+            opacity: props.active ? 0.3 : 0,
+            visibility: props.active ? "visible" : "hidden"
+        }} />
+    )
 }
 
 class SideBarController extends React.Component {
@@ -110,47 +109,43 @@ class SideBarController extends React.Component {
 
 function Link(props){
     return (
-        <a href={`${props.data.link}`} className="project-link">
+        <a target="_blank" rel="noopener noreferrer" href={`${props.data.link}`} className="link">
             <img 
                 alt={`${props.data.linkname}`} 
                 src={`icons/${props.data.linkname}-${props.light ? `White` : `Black`}.svg`} 
-                className="project-link-img"
+                className="link-img"
             />
         </a>
     )
 }
 
-class Project extends React.Component {
-    render() {
-        return (
-            <div className="project">
-                <img className="project-image" alt={`${this.props.data.picture}`} src={`images/projects/${this.props.data.picture}`} />
-                <div className="project-info">
-                    <span className="project-title">{this.props.data.name}</span>
-                    <span className="project-desc">{this.props.data.description}</span>
-                    <div className="project-links">
-                        {this.props.data.links.map(a => <Link data={a} key={a.linkname} />)}
-                    </div>
+function Project(props) {
+    return (
+        <div className="project">
+            <img className="project-image" alt={`${props.data.picture}`} src={`images/projects/${props.data.picture}`} />
+            <div className="project-info">
+                <span className="project-title">{props.data.name}</span>
+                <span className="project-desc">{props.data.description}</span>
+                <div className="project-links">
+                    {props.data.links.map(a => <Link data={a} key={a.linkname} />)}
                 </div>
             </div>
-        )
-    }
+        </div>
+    )
+
 }
 
-class Projects extends React.Component {
-    
-    render() {
-        return (
-            <div>
-                <div id="Projects">
-                    <h1>Projects</h1>
-                    <div id="project-container">
-                        {projectdata.map(a => <Project data={a} key={a.name} />) }
-                    </div>
+function Projects(props) {
+    return (
+        <div>
+            <div id="projects">
+                <h1>Projects</h1>
+                <div id="project-container">
+                    {projectdata.map(a => <Project data={a} key={a.name} />) }
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 function SecondCrack(props) {
@@ -164,7 +159,6 @@ function SecondCrack(props) {
 }
 
 function Trinket(props) {
-
     const data = props.data;
     return (
         <div className="trinket">
@@ -185,7 +179,7 @@ function Trinket(props) {
 
 function Trinkets(props) {
     return (
-        <div id="Trinkets">
+        <div id="trinkets">
             <h1>Trinkets</h1>
             <div id="trinket-container">
                 {trinketdata.map(a => <Trinket data={a} key={a.name} />)}
@@ -194,9 +188,11 @@ function Trinkets(props) {
     )
 }
 
-// class Footer extends React.Component {
-
-// }
+function Footer(props) {
+    return (
+        <div></div>
+    )
+}
 
 class App extends React.Component {
     constructor(props) {

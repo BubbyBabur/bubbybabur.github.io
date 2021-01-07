@@ -1,0 +1,43 @@
+
+#front-background {
+    background-color: black;
+    width:100%;
+    height:100%;
+}
+
+#net-div {
+    position:fixed;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    z-index: -1;
+    background-attachment: fixed;
+}
+
+#front-roger-fan {
+    position: absolute;
+    left: 50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+    color: white;
+    z-index: 1;
+    font-family: Bebas Neue, sans-serif;
+    font-size: 6em;
+    letter-spacing: 0.3em;
+}
+
+#down-icon {
+    position:absolute;
+    top:100vh;
+    left:50vw;
+    transform: translate(-50%,-50%);
+    width: 50px;
+    transition: transform 0.5s ease-in-out;
+}
+
+@media(hover: hover) and (pointer: fine) {
+    #down-icon:hover {
+        transform: translate(-50%,-50%) rotateZ(360deg);
+    }
+}
