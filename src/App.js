@@ -108,18 +108,16 @@ class SideBarController extends React.Component {
     }
 }
 
-class Link extends React.Component {
-    render() {
-        return (
-            <a href={`${this.props.data.link}`} className="project-link">
-                <img 
-                    alt={`${this.props.data.linkname}`} 
-                    src={`icons/${this.props.data.linkname}.svg`} 
-                    className="project-link-img"
-                />
-            </a>
-        )
-    }
+function Link(props){
+    return (
+        <a href={`${props.data.link}`} className="project-link">
+            <img 
+                alt={`${props.data.linkname}`} 
+                src={`icons/${props.data.linkname}-${props.light ? `White` : `Black`}.svg`} 
+                className="project-link-img"
+            />
+        </a>
+    )
 }
 
 class Project extends React.Component {
@@ -175,6 +173,9 @@ function Trinket(props) {
                 <div className="trinket-info">
                     <div className="trinket-title">{data.name}</div>
                     <div className="trinket-description">{data.description}</div>
+                    <div className="trinket-links"> 
+                        {data.links.map(a => <Link light={true} data={a} key={a.linkname} />)}
+                    </div>
                 </div>
             </div>
             <img className="trinket-img" alt={data.name} src={`./images/trinkets/${data.picture}`} />

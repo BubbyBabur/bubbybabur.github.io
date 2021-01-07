@@ -32,5 +32,179 @@
                 "link": "https://bubbybabur.github.io/Countdown2021/"
             }
         ]
+    },
+    {
+        "picture": "countdown.png",
+        "name": "Countdown",
+        "description": "A quick countdown to the end of the school year. (Not currently functional)",
+        "links": [
+            {
+                "linkname": "Github",
+                "link": "https://github.com/BubbyBabur/Countdown"
+            },
+            {
+                "linkname": "Link",
+                "link": "https://bubbybabur.github.io/Countdown/"
+            }
+        ]
+    },
+    {
+        "picture": "fireworks.png",
+        "name": "Fireworks",
+        "description": "Fireworks!",
+        "links": [
+            {
+                "linkname": "Github",
+                "link": "https://github.com/BubbyBabur/Sketches/tree/master/sketches/fireworks"
+            },
+            {
+                "linkname": "Link",
+                "link": "https://bubbybabur.github.io/Sketches/sketches/fireworks/"
+            },
+            {
+                "linkname": "p5",
+                "link": "https://editor.p5js.org/bubbybabur/sketches/ppeewqrkF"
+            }
+        ]
+    },
+    {
+        "picture": "flocking.png",
+        "name": "Flocking",
+        "description": "A flocking algorithm implemented in p5js.",
+        "links": [
+            {
+                "linkname": "Github",
+                "link": "https://github.com/BubbyBabur/Sketches/tree/master/sketches/flocking"
+            },
+            {
+                "linkname": "Link",
+                "link":"https://bubbybabur.github.io/Sketches/sketches/flocking/"
+            },
+            {
+                "linkname": "p5",
+                "link": "https://editor.p5js.org/bubbybabur/sketches/sfUB4Taki"
+            }
+        ]
+    }, 
+    {
+        "picture": "flower-physics.png",
+        "name": "Flower",
+        "description":"A quick flower simulation.",
+        "links": [
+            {
+                "linkname": "Github",
+                "link": "https://github.com/BubbyBabur/Sketches/tree/master/sketches/flower"
+            },
+            {
+                "linkname": "Link",
+                "link": "https://bubbybabur.github.io/Sketches/sketches/flower/"
+            }
+        ]
+    },
+    {
+        "picture": "maze-generator-and-solver.png",
+        "name": "Maze",
+        "description":"Generates and then solves a maze.",
+        "links": [
+            {
+                "linkname": "Github",
+                "link": "https://github.com/BubbyBabur/Sketches/tree/master/sketches/maze-generator-and-solver"
+            },
+            {
+                "linkname": "Link",
+                "link": "https://bubbybabur.github.io/Sketches/sketches/maze-generator-and-solver/"
+            },
+            {
+                "linkname": "p5",
+                "link": "https://editor.p5js.org/bubbybabur/sketches/vz4Ajo4rD"
+            }
+        ]
+    },
+    {
+        "picture": "sir.png",
+        "name": "SIR",
+        "description": "An extremely unrealistic Susceptible-Infected-Removed simulation of a disease.",
+        "links": [
+            {
+                "linkname": "Github",
+                "link": "https://github.com/BubbyBabur/Sketches/tree/master/sketches/SIR/SIR-by-proximity"
+            },
+            {
+                "linkname": "Link",
+                "link": "https://bubbybabur.github.io/Sketches/sketches/SIR/SIR-by-proximity/"
+            },
+            {
+                "linkname": "p5",
+                "link": "https://editor.p5js.org/bubbybabur/sketches/Py4ndfJk-"
+            }
+        ]
+    },
+    {
+        "picture": "snake.png",
+        "name": "Snake",
+        "description": "A very generic and very boring snake game.",
+        "links": [
+            {
+                "linkname": "Github",
+                "link": "https://github.com/BubbyBabur/Sketches/tree/master/sketches/snake"
+            },
+            {
+                "linkname": "Link",
+                "link": "https://bubbybabur.github.io/Sketches/sketches/snake/"
+            },
+            {
+                "linkname": "p5",
+                "link": "https://editor.p5js.org/bubbybabur/sketches/y-YaR0gSU"
+            }
+        ]
+    },
+    {
+        "picture":"squares-generative-art.png",
+        "name": "Squares",
+        "description": "Squares. Just squares.",
+        "links": [
+            {
+                "linkname": "Github",
+                "link": "https://github.com/BubbyBabur/Sketches/tree/master/sketches/CAC/squares"
+            },
+            {
+                "linkname": "Link",
+                "link": "https://bubbybabur.github.io/Sketches/sketches/CAC/squares/"
+            }
+        ]
+    },
+    {
+        "picture": "star-trails.png",
+        "name": "Star Trails",
+        "description": "Some quick generative art.",
+        "links": [
+            {
+                "linkname": "Github",
+                "link": "https://github.com/BubbyBabur/Sketches/tree/master/sketches/startrails"
+            },
+            {
+                "linkname": "Link",
+                "link": "https://bubbybabur.github.io/Sketches/sketches/startrails/"
+            },
+            {
+                "linkname": "p5",
+                "link": "https://editor.p5js.org/bubbybabur/sketches/mYJmOpJTc"
+            }
+        ]
+    },
+    {
+        "picture": "web.png",
+        "name": "Web",
+        "description": "A cool web thing using perlin noise, which is actually used in this website.",
+        "links": [
+            {
+                "linkname": "Github",
+                "link": "https://github.com/BubbyBabur/Sketches/tree/master/sketches/web-thing"
+            },
+            {
+                "linkname": "Link",
+                "link": "https://bubbybabur.github.io/Sketches/sketches/web-thing/"
+            }
+        ]
     }
 ]

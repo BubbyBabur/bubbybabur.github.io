@@ -170,7 +170,7 @@ html {
     margin: 10px;
     z-index: 3;
 }
-.project-link {
+.project-links > .project-link {
     margin: 0px 10px 0px 0px;
 }
 
@@ -181,8 +181,7 @@ html {
 
 
 #second-crack {
-    background-color: $second-background-color
-;
+    background-color: $second-background-color;
 }
 
 #sandwich {
@@ -238,6 +237,7 @@ html {
 
 #trinket-container {
     flex-direction: row;
+    flex-wrap: wrap;
     display: flex;
     width: 80vw;
     margin: 0px auto 100px auto;
@@ -247,7 +247,7 @@ $trinket-size: 200px;
 $trinket-border-radius: 10px;
 
 .trinket {
-    margin: 0px auto 0px auto;
+    margin: 0px auto 10px auto;
     width: $trinket-size;
     height: $trinket-size;
     overflow: hidden;
@@ -317,6 +317,17 @@ $trinket-border-radius: 10px;
     font-family: 'Lato';
     font-size: 0.8rem;
     margin: 0px 20px 5px 20px;
+}
+
+.trinket-links {
+    display: flex;
+    flex-direction: row;
+    margin: 20px auto 0px auto;
+    width: 150px;
+}
+
+.trinket-links > .project-link {
+    margin: 0px auto 0px auto;
 }
 
 #sidebar * {
