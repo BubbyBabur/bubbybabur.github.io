@@ -221,19 +221,16 @@ html {
 }
 
 #trinket-container {
-  flex-direction: row;
-  flex-wrap: wrap;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(200px, 1fr));
   width: 80vw;
   margin: 0px auto 100px auto;
 }
 
 .trinket {
-  margin: 0px auto 10px auto;
-  width: 200px;
-  height: 200px;
   overflow: hidden;
-  border-radius: 10px;
+  position: relative;
 }
 
 .trinket-img {
@@ -242,6 +239,7 @@ html {
   transition: filter 0.3s;
   z-index: 0;
   position: relative;
+  display: block;
 }
 
 .trinket:hover > .trinket-img {
@@ -250,11 +248,12 @@ html {
 
 .trinket-label-container {
   position: absolute;
-  width: 200px;
-  height: 200px;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   z-index: 2;
-  border-radius: 10px;
+  left: 0px;
+  top: 0px;
 }
 
 .trinket-label {
@@ -270,9 +269,9 @@ html {
 }
 
 .trinket-info {
-  width: 200px;
-  height: 200px;
-  margin-top: 200px;
+  width: 100%;
+  height: 100%;
+  margin-top: 100%;
   background-color: black;
   color: white;
   text-align: center;
