@@ -1,0 +1,64 @@
+#footer {
+  height: 350px;
+  width: 100vw;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-icon-link {
+  margin: 0px auto;
+}
+
+.footer-icon-div {
+  width: 50px;
+  height: 50px;
+  display: flex;
+}
+
+.footer-icon-image {
+  width: 50px;
+  margin: auto 0px;
+}
+
+#footer-icons {
+  margin: 30px auto 30px auto;
+  width: min( 50vw, 400px );
+  display: flex;
+  flex-direction: row;
+}
+
+#footer-links {
+  margin: 50px auto 30px auto;
+  width: min( 50vw, 400px );
+  display: flex;
+}
+
+.footer-link {
+  margin: 0px auto;
+  font-size: 1.5rem;
+}
+
+.footer-link a {
+  color: white;
+  font-family: 'Lato';
+  text-decoration: none;
+}
+
+#footer-name {
+  color: white;
+  font-family: 'Bebas Neue';
+  letter-spacing: 0.2rem;
+  margin: 30px auto 0px auto;
+  font-size: 2.0rem;
+}
+
+#footer-copyright {
+  margin: 5px auto auto auto;
+  color: white;
+  font-family: 'Lato';
+  font-style: italic;
+  text-align: center;
+  font-size: 0.7rem;
+}
+/*# sourceMappingURL=footer.css.map */

@@ -1,5 +1,5 @@
 import React from "react";
-import Net from "./utils/Net";
+import Net from "./utils/net";
 
 // LOL css imports
 import './css/app.css'
@@ -7,6 +7,7 @@ import './css/front.css'
 import './css/projects.css'
 import './css/trinkets.css'
 import './css/menu.css'
+import './css/footer.css'
 
 import projectdata from './data/projects.json';
 import trinketdata from './data/trinkets.json';
@@ -188,9 +189,46 @@ function Trinkets(props) {
     )
 }
 
+function FooterIcon(props) {
+    return (
+        <div className="footer-icon-link">
+            <a href={props.link} target="_blank" rel="noopener noreferrer">
+                <div className="footer-icon-div">
+                    <img alt={props.icon} className="footer-icon-image" src={`./icons/${props.icon}`} />
+                </div>
+            </a>
+        </div>
+    )
+}
+
+function FooterLink(props) {
+    return (
+        <div className="footer-link">
+            <a href={props.link}>{props.text}</a>
+        </div>
+    )
+}
+
 function Footer(props) {
     return (
-        <div></div>
+        <div id="footer">
+            <div id="footer-icons">
+                <FooterIcon icon="Mail-White.svg" link="mailto:rogerjoeyfan@gmail.com" />
+                <FooterIcon icon="PFP.svg" />
+                <FooterIcon icon="Github-White.svg" link="https://github.com/BubbyBabur" />
+            </div>
+            <div id="footer-links">
+                <FooterLink text="Projects" link="#projects" />
+                <FooterLink text="Trinkets" link="#trinkets" />
+            </div>
+            <div id="footer-name">
+                Roger Fan
+            </div>
+            <div id="footer-copyright">
+                ©Copyright 2020<br />
+                All Rights Reserved
+            </div>
+        </div>
     )
 }
 
@@ -208,6 +246,7 @@ class App extends React.Component {
                 <SecondCrack />
                 <SideBarController />
                 <Trinkets />
+                <Footer />
             </div>
         );
     }
