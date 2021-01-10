@@ -160,12 +160,17 @@ function SecondCrack(props) {
 }
 
 function Trinket(props) {
+
+    const [ active, setactive ] = React.useState(false)
+
+    console.log(active);
+
     const data = props.data;
     return (
-        <div className="trinket">
+        <div className="trinket" onClick={() => setactive(!active)}>
             <div className="trinket-label-container">
                 <div className="trinket-label">{data.name}</div>
-                <div className="trinket-info">
+                <div className={"trinket-info" + (active ? ' trinket-info-activated' : '')}>
                     <div className="trinket-title">{data.name}</div>
                     <div className="trinket-description">{data.description}</div>
                     <div className="trinket-links"> 

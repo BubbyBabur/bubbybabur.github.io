@@ -23,7 +23,7 @@ $second-background-color: #202020;
 
 .trinket-img {
     width: 100%;
-    filter:none;
+    filter: none;
     transition: filter 0.3s;
     z-index:0;
     position: relative;
@@ -31,7 +31,7 @@ $second-background-color: #202020;
 }
 
 .trinket:hover > .trinket-img {
-    filter:grayscale(100%);
+    filter: grayscale(100%);
 }
 
 .trinket-label-container {
@@ -71,7 +71,7 @@ $second-background-color: #202020;
     transition: margin-top 0.3s;
 }
 
-.trinket-label-container:hover > .trinket-info {
+.trinket-info-activated {
     margin-top: 20px;
 }
 

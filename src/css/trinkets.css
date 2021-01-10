@@ -67,7 +67,7 @@
   transition: margin-top 0.3s;
 }
 
-.trinket-label-container:hover > .trinket-info {
+.trinket-info-activated {
   margin-top: 20px;
 }
 
