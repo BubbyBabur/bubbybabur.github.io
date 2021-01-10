@@ -19,6 +19,8 @@ $second-background-color: #202020;
 
     perspective: 800px;
     -webkit-perspective: 800px;
+    z-index: 1;
+    position: relative;
 }
 
 .project {

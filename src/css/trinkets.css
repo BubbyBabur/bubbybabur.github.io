@@ -11,6 +11,8 @@
   grid-template-rows: repeat(auto-fill, minmax(200px, 1fr));
   width: 80vw;
   margin: 0px auto 100px auto;
+  z-index: 1;
+  position: relative;
 }
 
 .trinket {

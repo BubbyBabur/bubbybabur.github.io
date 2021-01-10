@@ -1,5 +1,6 @@
 import React from "react";
 import Net from "./utils/net";
+import Border from "./utils/border";
 
 // LOL css imports
 import './css/app.css'
@@ -8,6 +9,7 @@ import './css/projects.css'
 import './css/trinkets.css'
 import './css/menu.css'
 import './css/footer.css'
+import './css/border.css'
 
 import projectdata from './data/projects.json';
 import trinketdata from './data/trinkets.json';
@@ -252,6 +254,7 @@ class App extends React.Component {
                 <SideBarController />
                 <Trinkets />
                 <Footer />
+                <Border />
             </div>
         );
     }
