@@ -165,8 +165,6 @@ function Trinket(props) {
 
     const [ active, setactive ] = React.useState(false)
 
-    console.log(active);
-
     const data = props.data;
     return (
         <div className="trinket" onClick={() => setactive(!active)}>
