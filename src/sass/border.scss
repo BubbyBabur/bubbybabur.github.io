@@ -1,6 +1,16 @@
-#border {
+.border {
+    position: fixed;
+    z-index: 0;
+}
+
+#border-left {
     position: fixed;
     top: 0px;
     left:0px;
-    z-index: 0;
+}
+
+#border-right {
+    position: fixed;
+    top: 0px;
+    right:0px;
 }

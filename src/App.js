@@ -239,6 +239,15 @@ function Footer(props) {
     )
 }
 
+function Borders(props) {
+    return ( 
+        <div>
+            <Border x={-500} id="border-right" /> 
+            <Border x={500} id="border-left" /> 
+        </div>
+    )
+}
+
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -254,7 +263,7 @@ class App extends React.Component {
                 <SideBarController />
                 <Trinkets />
                 <Footer />
-                <Border />
+                <Borders />
             </div>
         );
     }
